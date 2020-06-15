@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="match_parent"
+    tools:context=".Log_Reg.Fragment_Login">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="70dp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/correo_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Correo eléctronico "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:drawableLeft="@drawable/correo"
+                        android:textColorHint="#ccc"
+                        android:inputType="textEmailAddress"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/clave_login"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="22dp"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Contraseña "
+                        android:textColor="#000"
+
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:drawableStart="@drawable/contrasena"
+                        android:inputType="textPassword"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="33dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/btnlogin"
+                    android:text="Inicia sesión"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+
+                <Button
+                    android:id="@+id/btn_olvido_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="Olvidé mi contraseña"
+                    android:textColor="@color/colorAccent"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+
+
+                <Button
+                    android:id="@+id/btn_verdemo_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="111dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="Ver demo"
+                    android:textColor="@color/colorAccent"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</FrameLayout>

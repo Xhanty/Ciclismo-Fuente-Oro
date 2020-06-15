@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "346626754934",
+    "firebase_url": "https://ciclismo-fuente-oro.firebaseio.com",
+    "project_id": "ciclismo-fuente-oro",
+    "storage_bucket": "ciclismo-fuente-oro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346626754934:android:8a04e4fb8d45115c75d257",
+        "android_client_info": {
+          "package_name": "com.fuenteoro.ciclismo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346626754934-buldna1d4m0qqq19dnofd8c1dvafabg1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuenteoro.ciclismo",
+            "certificate_hash": "62795efa5ed77d4228f2f0d7fc4faf216ee04342"
+          }
+        },
+        {
+          "client_id": "346626754934-ulodq8r0323e2h3qlbq8pu5hupiuc311.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpwoMvxveHJfhgk_dukTkpzAJW0qsEWq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346626754934-ulodq8r0323e2h3qlbq8pu5hupiuc311.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
