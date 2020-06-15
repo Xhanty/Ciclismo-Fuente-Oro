@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Función para redirigir a la información(2 Segundos).
+        //Validar con sqllite
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
