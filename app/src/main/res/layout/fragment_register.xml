@@ -26,13 +26,12 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/correo_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/correo_register"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:hint="  Correo eléctronico "
@@ -46,57 +45,56 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="66dp"
-                        android:layout_marginLeft="37dp"
-                        android:src="@drawable/carnet"/>
-
-                    <Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="66dp"
-                        android:fontFamily="sans-serif-medium"
-
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="35dp"
-                        android:entries="@array/tip_documento" />
-
-                </LinearLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ndocumento_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nombres_regis"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:hint="  Número de identificación "
+                        android:hint="  Nombres "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
                         android:drawableStart="@drawable/carnet"
-                        android:inputType="number"/>
+                        android:inputType="text"/>
 
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/clave_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/apellidos_regis"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Apellidos "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:drawableStart="@drawable/carnet"
+                        android:inputType="text"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/clave_register"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:hint="  Contraseña "
@@ -113,13 +111,13 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/claveconfir_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/claveconfir_register"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:maxLength="10"
@@ -163,7 +161,7 @@
 
                 </LinearLayout>
                 <Button
-                    android:id="@+id/btn_login"
+                    android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="33dp"

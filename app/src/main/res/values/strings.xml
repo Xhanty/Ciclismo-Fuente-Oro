@@ -3,12 +3,4 @@
     <string name="tab_text_1">Inicia Sesión</string>
     <string name="tab_text_2">Regístrate</string>
 
-    <string-array name="tip_documento">
-
-        <item>Cédula</item>
-        <item>Cédula Extranjería</item>
-        <item>Pasaporte</item>
-        <item>Tarjeta Identidad</item>
-
-    </string-array>
 </resources>
