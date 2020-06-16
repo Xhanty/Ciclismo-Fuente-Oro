@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MenuActivity">
+
+    <TextView
+        android:id="@+id/pr_name_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre usuario"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/pr_email_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email usuario"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btn_cerrarsesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cerrar Sesión"
+        android:background="@color/colorAccent"
+        android:textColor="#fff"
+        android:layout_margin="20dp"/>
+
+</LinearLayout>

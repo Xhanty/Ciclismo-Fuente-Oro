@@ -1,10 +1,14 @@
 package com.fuenteoro.ciclismo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -16,6 +20,7 @@ public class InfoIndexActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    boolean cerrar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,40 @@ public class InfoIndexActivity extends AppCompatActivity {
         public int getCount(){
             //Total de páginas
             return 4;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Alerta");
+        builder.setMessage("¿Estás seguro de salir de la aplicación?");
+
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cerrar = true;
+                salirApp(cerrar);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cerrar = false;
+                salirApp(cerrar);
+            }
+        });
+
+        builder.create();
+        builder.show();
+    }
+
+    public void salirApp(boolean cerrar){
+        if(cerrar == true){
+            Toast.makeText(this, "Regresa pronto!", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }

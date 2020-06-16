@@ -24,7 +24,6 @@
                 android:layout_marginBottom="50dp"
                 android:layout_marginTop="30dp">
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:maxLength="10"
-                        android:hint="  Confirmar contraseña "
+                        android:hint=" Confirmar contraseña "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
