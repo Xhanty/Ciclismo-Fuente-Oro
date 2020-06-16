@@ -46,24 +46,29 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void UserInfo(){
-        String id = mAuth.getCurrentUser().getUid();
-        mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    String namedata = dataSnapshot.child("nombres").getValue().toString();
-                    String emaildata = dataSnapshot.child("email").getValue().toString();
+        try {
+            String id = mAuth.getCurrentUser().getUid();
+            mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String namedata = dataSnapshot.child("nombres").getValue().toString();
+                        String emaildata = dataSnapshot.child("email").getValue().toString();
 
-                    nombre.setText(namedata);
-                    email.setText(emaildata);
+                        nombre.setText(namedata);
+                        email.setText(emaildata);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        } catch (Exception e){
+            Toast.makeText(this, "A ocurrido un error, intentalo más tarde", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
