@@ -1,122 +1,95 @@
 package com.fuenteoro.ciclismo;
 
-import android.content.DialogInterface;
+
+import android.Manifest;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import com.fuenteoro.ciclismo.InfoIndex.*;
+import com.fuenteoro.ciclismo.Utils.DatabaseHelper;
+import com.hololo.tutorial.library.PermissionStep;
+import com.hololo.tutorial.library.Step;
+import com.hololo.tutorial.library.TutorialActivity;
 
-public class InfoIndexActivity extends AppCompatActivity {
+public class InfoIndexActivity extends TutorialActivity {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    boolean cerrar = false;
-
+    DatabaseHelper myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_index);
 
-        mSectionsPagerAdapter =  new SectionsPagerAdapter(getSupportFragmentManager());
+        myDB = new DatabaseHelper(this);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-    }
+        addFragment(
+                new PermissionStep
+                        .Builder()
+                        .setPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                        .setTitle(getString(R.string.permission_title)).setContent(getString(R.string.permission_detail))
+                        .setBackgroundColor(Color.parseColor("#FF0957"))
+                        .setDrawable(R.drawable.ss_1)
+                        .setSummary(getString(R.string.continue_and_learn))
+                        .build());
 
-    private static class PlaceholderFragment extends Fragment {
-        private static final String ARG_STRING_NUMBER = "section_number";
+        addFragment(
+                new Step.Builder()
+                        .setTitle(getString(R.string.automatic_data))
+                        .setContent(getString(R.string.gm_finds_photos))
+                        .setBackgroundColor(Color.parseColor("#FF0957"))
+                        .setDrawable(R.drawable.ss_1)
+                        .setSummary(getString(R.string.continue_and_learn))
+                        .build());
 
-        private PlaceholderFragment(){
-        }
+        addFragment(
+                new Step.Builder()
+                        .setTitle(getString(R.string.choose_the_song))
+                        .setContent(getString(R.string.swap_to_the_tab))
+                        .setBackgroundColor(Color.parseColor("#00D4BA"))
+                        .setDrawable(R.drawable.ss_2)
+                        .setSummary(getString(R.string.continue_and_update))
+                        .build());
 
-        private static Fragment newInstance(int sectionNumber){
+        addFragment(
+                new Step.Builder()
+                        .setTitle(getString(R.string.edit_data))
+                        .setContent(getString(R.string.update_easily))
+                        .setBackgroundColor(Color.parseColor("#1098FE"))
+                        .setDrawable(R.drawable.ss_3)
+                        .setSummary(getString(R.string.continue_and_result))
+                        .build());
 
-            Fragment fragment = null;
-            switch (sectionNumber){
-                case 1:
-                    fragment = new Fragment_PagOne();
-                    break;
-                case 2:
-                    fragment = new Fragment_PagTwo();
-                    break;
-                case 3:
-                    fragment = new Fragment_PagThree();
-                    break;
-                case 4:
-                    fragment = new Fragment_PagFour();
-                    break;
-            }
 
-            return fragment;
-        }
+        addFragment(
+                new Step.Builder()
+                        .setTitle(getString(R.string.result_awesome))
+                        .setContent(getString(R.string.after_updating))
+                        .setBackgroundColor(Color.parseColor("#CA70F3"))
+                        .setDrawable(R.drawable.ss_4)
+                        .setSummary(getString(R.string.thank_you))
+                        .build());
 
-        @Override
-        public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                                  Bundle savedInstanceState){
-            View rootView = inflater.inflate(R.layout.fragment_pag_one, container, false);
-            return rootView;
-        }
-    }
 
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private SectionsPagerAdapter (FragmentManager fm){
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount(){
-            //Total de páginas
-            return 4;
-        }
     }
 
     @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void finishTutorial() {
+        boolean isInserted = myDB.insertData(1);
 
-        builder.setTitle("Alerta");
-        builder.setMessage("¿Estás seguro de salir de la aplicación?");
+        if(isInserted == true){
+            Toast.makeText(this, "Tutorial finalizado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
 
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                cerrar = true;
-                salirApp(cerrar);
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                cerrar = false;
-                salirApp(cerrar);
-            }
-        });
-
-        builder.create();
-        builder.show();
-    }
-
-    public void salirApp(boolean cerrar){
-        if(cerrar == true){
-            Toast.makeText(this, "Regresa pronto!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "A ocurrido un error, intentalo más tarde", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+    }
+
+    @Override
+    public void currentFragmentPosition(int position) {
+        //Toast.makeText(this, "Pantalla: " + position, Toast.LENGTH_SHORT).show();
     }
 }

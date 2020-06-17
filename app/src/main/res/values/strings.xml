@@ -3,4 +3,28 @@
     <string name="tab_text_1">Inicia Sesión</string>
     <string name="tab_text_2">Regístrate</string>
 
+    <!--Pantalla 0-->
+    <string name="permission_title">Concedenos los accesos requeridos</string>
+    <string name="permission_detail">Dar acceso a la app de ciclismo a los archivos y a tú ubicación</string>
+    <string name="continue_and_learn">Continuar para seguir leyendo</string>
+
+    <!--Pantalla 1-->
+    <string name="automatic_data">Datos automáticos</string>
+    <string name="gm_finds_photos">Encuentra automáticamente rutas y sitios reconocidos del municipio Fuente de oro</string>
+
+    <!--Pantalla 2-->
+    <string name="choose_the_song">Elige la ruta</string>
+    <string name="swap_to_the_tab">Escoge la ruta que quieras recorrer o el sitio dónde quieras ir, y automáticamente se te desplegarán todos los datos de esta</string>
+    <string name="continue_and_update">Continuar para seguir leyendo</string>
+
+    <!--Pantalla 3-->
+    <string name="edit_data">Califica y comenta</string>
+    <string name="update_easily">Cuándo recorres una ruta o vayas a un sitio podrás calificarlo</string>
+    <string name="continue_and_result">Continuar para terminar</string>
+
+    <!--Pantalla 4-->
+    <string name="result_awesome">Empieza ya!</string>
+    <string name="thank_you">Gracias por elegirnos</string>
+    <string name="after_updating">Empieza a recorrer Fuente de oro y a descubrir sus maravillas</string>
+
 </resources>
