@@ -18,7 +18,6 @@ public class Rutas {
         this.calificacion = calificacion;
     }
 
-
     public String getNombre() {
         return nombre;
     }

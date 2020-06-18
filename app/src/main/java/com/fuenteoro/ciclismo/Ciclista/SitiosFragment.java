@@ -1,6 +1,7 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -48,12 +49,21 @@ public class SitiosFragment extends Fragment {
         FirebaseRecyclerAdapter<Sitios, SitiosFragment.SitiosViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Sitios, SitiosFragment.SitiosViewHolder>
                 (Sitios.class, R.layout.sitios_row, SitiosFragment.SitiosViewHolder.class, mDatabase) {
             @Override
-            protected void populateViewHolder(SitiosFragment.SitiosViewHolder sitiosViewHolder, Sitios sitios, int i) {
+            protected void populateViewHolder(SitiosFragment.SitiosViewHolder sitiosViewHolder, Sitios sitios, final int i) {
 
                 sitiosViewHolder.setNombre(sitios.getNombre());
                 sitiosViewHolder.setDetalle(sitios.getDetalle());
                 sitiosViewHolder.setImage(getContext(), sitios.getImagen());
                 sitiosViewHolder.setCalificacion(sitios.getCalificacion());
+
+                sitiosViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), DetalleSitioActivity.class);
+                        intent.putExtra("ID", getRef(i).getKey());
+                        startActivity(intent);
+                    }
+                });
             }
         };
 

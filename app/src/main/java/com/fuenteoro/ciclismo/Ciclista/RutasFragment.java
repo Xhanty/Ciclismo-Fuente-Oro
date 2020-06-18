@@ -1,6 +1,7 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -48,12 +49,22 @@ public class RutasFragment extends Fragment {
         FirebaseRecyclerAdapter<Rutas, RutasViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>
                 (Rutas.class, R.layout.rutas_row, RutasViewHolder.class, mDatabase) {
             @Override
-            protected void populateViewHolder(RutasViewHolder rutasViewHolder, Rutas rutas, int i) {
+            protected void populateViewHolder(RutasViewHolder rutasViewHolder, Rutas rutas, final int i) {
 
                 rutasViewHolder.setNombre(rutas.getNombre());
                 rutasViewHolder.setDetalle(rutas.getDetalle());
                 rutasViewHolder.setImage(getContext(), rutas.getImagen());
                 rutasViewHolder.setCalificacion(rutas.getCalificacion());
+
+
+                rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
+                        intent.putExtra("ID", getRef(i).getKey());
+                        startActivity(intent);
+                    }
+                });
             }
         };
 
