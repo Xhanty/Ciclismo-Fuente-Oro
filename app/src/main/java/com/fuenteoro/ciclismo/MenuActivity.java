@@ -1,104 +1,70 @@
 package com.fuenteoro.ciclismo;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.fuenteoro.ciclismo.Ciclista.PerfilFragment;
+import com.fuenteoro.ciclismo.Ciclista.RutasFragment;
+import com.fuenteoro.ciclismo.Ciclista.SitiosFragment;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
+public class MenuActivity extends AppCompatActivity {
 
     boolean cerrar = false;
-    Button cerrar_sesion;
-    private FirebaseAuth mAuth;
-    TextView nombre, email;
-    private DatabaseReference mDatabase;
+    ChipNavigationBar bottomNav;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        bottomNav = findViewById(R.id.nav_ciclista);
 
-        nombre = findViewById(R.id.pr_name_menu);
-        email = findViewById(R.id.pr_email_menu);
-
-        UserInfo();
-
-        cerrar_sesion = findViewById(R.id.btn_cerrarsesion);
-
-        cerrar_sesion.setOnClickListener(this);
-    }
-
-    private void UserInfo(){
-        try {
-            String id = mAuth.getCurrentUser().getUid();
-            mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String namedata = dataSnapshot.child("nombres").getValue().toString();
-                        String emaildata = dataSnapshot.child("email").getValue().toString();
-
-                        nombre.setText(namedata);
-                        email.setText(emaildata);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-        } catch (Exception e){
-            Toast.makeText(this, "A ocurrido un error, intentalo más tarde", Toast.LENGTH_SHORT).show();
+        if (savedInstanceState==null){
+            bottomNav.setItemSelected(R.id.home_ciclista, true);
+            fragmentManager = getSupportFragmentManager();
+            RutasFragment rutasFragment = new RutasFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_ciclista, rutasFragment)
+                    .commit();
         }
-    }
 
-    @Override
-    public void onClick(View v) {
-        if(v == cerrar_sesion){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle("Alerta");
-            builder.setMessage("¿Deseas cerrar la sesión?");
-
-            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(getApplicationContext(), "Sesión cerrada!", Toast.LENGTH_SHORT).show();
-                    mAuth.signOut();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+        bottomNav.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int id) {
+                Fragment fragment = null;
+                switch (id){
+                    case R.id.home_ciclista:
+                        fragment = new RutasFragment();
+                        break;
+                    case R.id.sitios_ciclista:
+                        fragment = new SitiosFragment();
+                        break;
+                    case R.id.account_ciclista:
+                        fragment = new PerfilFragment();
+                        break;
                 }
-            });
 
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                if(fragment != null){
+                    fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_ciclista, fragment)
+                            .commit();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "No se puede acceder a esta opción", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
 
-            builder.create();
-            builder.show();
-        }
     }
 
     @Override
