@@ -1,5 +1,6 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 
 import com.fuenteoro.ciclismo.LoginActivity;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     Button cerrar_sesion;
+    //Progress Dialog
+    ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     TextView nombre;
     TextInputEditText fullname, email;
@@ -46,7 +52,30 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
         fullname = view.findViewById(R.id.full_name_profile);
 
-        UserInfo();
+
+        if(UtilsNetwork.isOnline(getContext())) {
+            //Abrimos el progressDialog
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.show();
+
+            //Contenido
+            progressDialog.setContentView(R.layout.progress_dialog);
+
+            //Transparente
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent);
+            UserInfo();
+
+        } else {
+            // Crea el nuevo fragmento y la transacción.
+            Fragment nuevoFragmento = new InternetFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_ciclista, nuevoFragmento);
+            transaction.addToBackStack(null);
+
+            // Commit a la transacción
+            transaction.commit();
+        }
 
         cerrar_sesion = view.findViewById(R.id.btn_cerrarsesion);
 
@@ -68,6 +97,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                         nombre.setText(namedata);
                         fullname.setText(namedata);
                         email.setText(emaildata);
+                        progressDialog.dismiss();
                     }
                 }
 

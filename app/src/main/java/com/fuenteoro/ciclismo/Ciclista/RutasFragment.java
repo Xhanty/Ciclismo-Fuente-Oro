@@ -1,10 +1,12 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -26,6 +30,8 @@ public class RutasFragment extends Fragment {
 
     private RecyclerView mRutasList;
     private DatabaseReference mDatabase;
+    //Progress Dialog
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +39,7 @@ public class RutasFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rutas, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas").child("ubicaciones");
         mDatabase.keepSynced(true);
 
         mRutasList = (RecyclerView) view.findViewById(R.id.recy_rutas);
@@ -46,29 +52,54 @@ public class RutasFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<Rutas, RutasViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>
-                (Rutas.class, R.layout.rutas_row, RutasViewHolder.class, mDatabase) {
-            @Override
-            protected void populateViewHolder(RutasViewHolder rutasViewHolder, Rutas rutas, final int i) {
 
-                rutasViewHolder.setNombre(rutas.getNombre());
-                rutasViewHolder.setDetalle(rutas.getDetalle());
-                rutasViewHolder.setImage(getContext(), rutas.getImagen());
-                rutasViewHolder.setCalificacion(rutas.getCalificacion());
+            if(UtilsNetwork.isOnline(getContext())) {
+                //Abrimos el progressDialog
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
 
+                //Contenido
+                progressDialog.setContentView(R.layout.progress_dialog);
 
-                rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                //Transparente
+                progressDialog.getWindow().setBackgroundDrawableResource(
+                        android.R.color.transparent);
+
+                FirebaseRecyclerAdapter<Rutas, RutasViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>
+                        (Rutas.class, R.layout.rutas_row, RutasViewHolder.class, mDatabase) {
                     @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
-                        intent.putExtra("ID", getRef(i).getKey());
-                        startActivity(intent);
-                    }
-                });
-            }
-        };
+                    protected void populateViewHolder(RutasViewHolder rutasViewHolder, Rutas rutas, final int i) {
 
-        mRutasList.setAdapter(firebaseRecyclerAdapter);
+                        rutasViewHolder.setNombre(rutas.getNombre());
+                        rutasViewHolder.setDetalle(rutas.getDetalle());
+                        rutasViewHolder.setImage(getContext(), rutas.getImagen());
+                        rutasViewHolder.setCalificacion(rutas.getCalificacion());
+                        progressDialog.dismiss();
+
+
+                        rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
+                                intent.putExtra("ID", getRef(i).getKey());
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                };
+                mRutasList.setAdapter(firebaseRecyclerAdapter);
+
+            } else {
+
+                // Crea el nuevo fragmento y la transacción.
+                Fragment nuevoFragmento = new InternetFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_ciclista, nuevoFragmento);
+                transaction.addToBackStack(null);
+
+                // Commit a la transacción
+                transaction.commit();
+        }
     }
 
     public static class RutasViewHolder extends RecyclerView.ViewHolder {

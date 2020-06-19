@@ -37,8 +37,8 @@ public class DetalleSitioActivity extends AppCompatActivity {
         calificacion_detalle_sitio = findViewById(R.id.calificacion_sitio_detalle);
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas");
-        mDatabase.child(ID).addValueEventListener(new ValueEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
+        mDatabase.child("ubicaciones").child(ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){

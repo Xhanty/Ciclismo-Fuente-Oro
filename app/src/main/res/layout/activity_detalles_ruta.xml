@@ -8,6 +8,11 @@
     android:layout_marginTop="10dp"
     tools:context=".Ciclista.DetallesRutaActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,110 +69,18 @@
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:layout_marginStart="-10dp"
-        android:layout_marginEnd="-10dp"
-        android:layout_marginBottom="30dp"
-        android:background="@color/colorPrimary"
-        android:padding="20dp">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@color/colorPrimary"
-                android:layout_height="match_parent"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_settings" />
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="10dp"
-            android:layout_marginStart="5dp"
-            app:cardElevation="10dp">
+            android:layout_height="400dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/abhaya_libre_semibold"
-                    android:includeFontPadding="false"
-                    android:text="Aquí va a ir el comentario hecho por santiago henao el día de hoy"
-                    android:layout_alignParentStart="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_alignParentBottom="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/abhaya_libre_semibold"
-                    android:includeFontPadding="false"
-                    android:layout_alignParentStart="true"
-                    android:text="Santiago Henao"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:fontFamily="@font/abhaya_libre_semibold"
-                    android:includeFontPadding="false"
-                    android:layout_alignParentEnd="true"
-                    android:text="18/06/2020"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recy_rutas_detalles_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:hint="asdad"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agregar"/>
-
 
     </LinearLayout>
 
