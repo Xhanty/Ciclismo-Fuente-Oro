@@ -4,14 +4,13 @@ public class ComentariosRutas {
 
     private String ciclista, comentario, fecha;
 
-    public ComentariosRutas(){
-
-    }
-
     public ComentariosRutas(String ciclista, String comentario, String fecha) {
         this.ciclista = ciclista;
         this.comentario = comentario;
         this.fecha = fecha;
+    }
+
+    public ComentariosRutas(){
     }
 
     public String getCiclista() {

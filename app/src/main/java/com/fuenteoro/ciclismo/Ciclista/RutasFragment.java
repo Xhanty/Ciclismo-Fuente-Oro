@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,9 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.fuenteoro.ciclismo.Models.ComentariosRutas;
 import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
@@ -32,6 +34,9 @@ public class RutasFragment extends Fragment {
     private DatabaseReference mDatabase;
     //Progress Dialog
     ProgressDialog progressDialog;
+    FirebaseRecyclerOptions<Rutas> options;
+    FirebaseRecyclerAdapter<Rutas, RutasViewHolder> adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,11 +70,10 @@ public class RutasFragment extends Fragment {
                 progressDialog.getWindow().setBackgroundDrawableResource(
                         android.R.color.transparent);
 
-                FirebaseRecyclerAdapter<Rutas, RutasViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>
-                        (Rutas.class, R.layout.rutas_row, RutasViewHolder.class, mDatabase) {
+                options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(mDatabase, Rutas.class).build();
+                adapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>(options) {
                     @Override
-                    protected void populateViewHolder(RutasViewHolder rutasViewHolder, Rutas rutas, final int i) {
-
+                    protected void onBindViewHolder(RutasViewHolder rutasViewHolder,final int i, Rutas rutas) {
                         rutasViewHolder.setNombre(rutas.getNombre());
                         rutasViewHolder.setDetalle(rutas.getDetalle());
                         rutasViewHolder.setImage(getContext(), rutas.getImagen());
@@ -86,8 +90,16 @@ public class RutasFragment extends Fragment {
                             }
                         });
                     }
+
+                    @NonNull
+                    @Override
+                    public RutasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rutas_row, parent, false);
+                        return new RutasViewHolder(v);
+                    }
                 };
-                mRutasList.setAdapter(firebaseRecyclerAdapter);
+                adapter.startListening();
+                mRutasList.setAdapter(adapter);
 
             } else {
 

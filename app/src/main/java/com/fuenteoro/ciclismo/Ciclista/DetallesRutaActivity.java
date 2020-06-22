@@ -2,12 +2,11 @@ package com.fuenteoro.ciclismo.Ciclista;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.fuenteoro.ciclismo.Models.ComentariosRutas;
-import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.firebase.database.DataSnapshot;
@@ -19,10 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -31,7 +30,7 @@ import android.widget.Toast;
 public class DetallesRutaActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    TextView nombreruta, detalleruta, comentarioruta, ciclista, fecha;
+    TextView nombreruta, detalleruta;
     ImageView img_ruta;
     private String ID;
     RatingBar calificacion_detalle;
@@ -39,6 +38,8 @@ public class DetallesRutaActivity extends AppCompatActivity {
     private RecyclerView mRutasList;
     //Progress Dialog
     ProgressDialog progressDialog;
+    FirebaseRecyclerOptions<ComentariosRutas> options;
+    FirebaseRecyclerAdapter<ComentariosRutas, DetallesRutaViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +52,11 @@ public class DetallesRutaActivity extends AppCompatActivity {
         img_ruta = findViewById(R.id.img_ruta_detalle);
         calificacion_detalle = findViewById(R.id.calificacion_ruta_detalle);
 
-        comentarioruta = findViewById(R.id.comentario_ruta);
-        ciclista = findViewById(R.id.ciclista_comentario_ruta);
-        fecha = findViewById(R.id.fecha_comentario_ruta);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas");
         IDCC = Integer.parseInt(ID);
-        mDatabase.keepSynced(true);
 
         mRutasList = (RecyclerView) findViewById(R.id.recy_rutas_detalles_c);
-        mRutasList.setHasFixedSize(true);
-        mRutasList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -80,25 +74,7 @@ public class DetallesRutaActivity extends AppCompatActivity {
             progressDialog.getWindow().setBackgroundDrawableResource(
                     android.R.color.transparent);
 
-
-            final Query q = mDatabase.child("comentarios").orderByChild("ruta").equalTo(IDCC);
-
-            FirebaseRecyclerAdapter<ComentariosRutas, DetallesRutaViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ComentariosRutas, DetallesRutaViewHolder>
-                    (ComentariosRutas.class, R.layout.comentarios_rutas_row, DetallesRutaViewHolder.class, q) {
-
-                @Override
-                protected void populateViewHolder(DetallesRutaViewHolder detallesRutaViewHolder, ComentariosRutas comentariosRutas, final int i) {
-
-                    detallesRutaViewHolder.setCiclista(comentariosRutas.getCiclista());
-                    detallesRutaViewHolder.setComentario(comentariosRutas.getComentario());
-                    detallesRutaViewHolder.setFecha(comentariosRutas.getFecha());
-                    progressDialog.dismiss();
-                }
-            };
-            mRutasList.setAdapter(firebaseRecyclerAdapter);
-
-
-            mDatabase.child("ubicaciones").child(ID).addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Rutas").child("ubicaciones").child(ID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -126,6 +102,44 @@ public class DetallesRutaActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
                 }
             });
+            final Query query = FirebaseDatabase.getInstance().getReference("Rutas").child("comentarios").orderByChild("ruta").equalTo(IDCC);
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+
+                        options = new FirebaseRecyclerOptions.Builder<ComentariosRutas>().setQuery(query, ComentariosRutas.class).build();
+                        adapter = new FirebaseRecyclerAdapter<ComentariosRutas, DetallesRutaViewHolder>(options) {
+                            @Override
+                            protected void onBindViewHolder(DetallesRutaViewHolder detallesRutaViewHolder, final int i, ComentariosRutas comentariosRutas) {
+                                detallesRutaViewHolder.setCiclista(comentariosRutas.getCiclista());
+                                detallesRutaViewHolder.setComentario(comentariosRutas.getComentario());
+                                detallesRutaViewHolder.setFecha(comentariosRutas.getFecha());
+                            }
+
+                            @NonNull
+                            @Override
+                            public DetallesRutaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.comentarios_rutas_row, parent, false);
+                                return new DetallesRutaViewHolder(v);
+                            }
+                        };
+                        Toast.makeText(getApplicationContext(), "Encontré comentarios", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        adapter.startListening();
+                        mRutasList.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No hay comentarios", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
         } else{
             Toast.makeText(getApplicationContext(), "NO WIFI", Toast.LENGTH_LONG).show();
@@ -145,13 +159,16 @@ public class DetallesRutaActivity extends AppCompatActivity {
         }
 
         public void setComentario(String comentario){
-            TextView detalle_post = (TextView)mView.findViewById(R.id.comentario_ruta);
-            detalle_post.setText(comentario);
+            TextView comentario_post = (TextView)mView.findViewById(R.id.comentario_ruta);
+            comentario_post.setText(comentario);
         }
 
         public void setFecha(String fecha){
-            TextView calificacion_post = (TextView) mView.findViewById(R.id.fecha_comentario_ruta);
-            calificacion_post.setText(fecha);
+            TextView fecha_post = (TextView)mView.findViewById(R.id.fecha_comentario_ruta);
+            fecha_post.setText(fecha);
         }
+    }
+
+    private void comentariosrutas(){
     }
 }

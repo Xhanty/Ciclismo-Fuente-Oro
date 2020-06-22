@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.fuenteoro.ciclismo.Models.ComentariosRutas;
 import com.fuenteoro.ciclismo.Models.Sitios;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
@@ -33,6 +36,9 @@ public class SitiosFragment extends Fragment {
 
     //Progress Dialog
     ProgressDialog progressDialog;
+
+    FirebaseRecyclerOptions<Sitios> options;
+    FirebaseRecyclerAdapter<Sitios, SitiosViewHolder> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,28 +72,36 @@ public class SitiosFragment extends Fragment {
             progressDialog.getWindow().setBackgroundDrawableResource(
                     android.R.color.transparent);
 
-            FirebaseRecyclerAdapter<Sitios, SitiosFragment.SitiosViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Sitios, SitiosFragment.SitiosViewHolder>
-                (Sitios.class, R.layout.sitios_row, SitiosFragment.SitiosViewHolder.class, mDatabase) {
-            @Override
-            protected void populateViewHolder(SitiosFragment.SitiosViewHolder sitiosViewHolder, Sitios sitios, final int i) {
+            options = new FirebaseRecyclerOptions.Builder<Sitios>().setQuery(mDatabase, Sitios.class).build();
 
-                sitiosViewHolder.setNombre(sitios.getNombre());
-                sitiosViewHolder.setDetalle(sitios.getDetalle());
-                sitiosViewHolder.setImage(getContext(), sitios.getImagen());
-                sitiosViewHolder.setCalificacion(sitios.getCalificacion());
-                progressDialog.dismiss();
+            adapter = new FirebaseRecyclerAdapter<Sitios, SitiosViewHolder>(options) {
+                @Override
+                protected void onBindViewHolder(SitiosViewHolder sitiosViewHolder, final int i, Sitios sitios) {
+                    sitiosViewHolder.setNombre(sitios.getNombre());
+                    sitiosViewHolder.setDetalle(sitios.getDetalle());
+                    sitiosViewHolder.setImage(getContext(), sitios.getImagen());
+                    sitiosViewHolder.setCalificacion(sitios.getCalificacion());
+                    progressDialog.dismiss();
 
-                sitiosViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), DetalleSitioActivity.class);
-                        intent.putExtra("ID", getRef(i).getKey());
-                        startActivity(intent);
-                    }
-                });
-            }
-        };
-        mRutasList.setAdapter(firebaseRecyclerAdapter);
+                    sitiosViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getContext(), DetalleSitioActivity.class);
+                            intent.putExtra("ID", getRef(i).getKey());
+                            startActivity(intent);
+                        }
+                    });
+                }
+
+                @NonNull
+                @Override
+                public SitiosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.sitios_row, parent, false);
+                    return new SitiosViewHolder(v);
+                }
+            };
+            adapter.startListening();
+            mRutasList.setAdapter(adapter);
 
     } else {
             // Crea el nuevo fragmento y la transacción.
