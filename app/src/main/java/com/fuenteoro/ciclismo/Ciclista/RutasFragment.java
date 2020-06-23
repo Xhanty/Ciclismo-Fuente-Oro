@@ -75,7 +75,9 @@ public class RutasFragment extends Fragment {
                     @Override
                     protected void onBindViewHolder(RutasViewHolder rutasViewHolder,final int i, Rutas rutas) {
                         rutasViewHolder.setNombre(rutas.getNombre());
-                        rutasViewHolder.setDetalle(rutas.getDetalle());
+                        rutasViewHolder.setDistancia(rutas.getDistancia());
+                        rutasViewHolder.setElevacion(rutas.getElevacion());
+                        rutasViewHolder.setDificultad(rutas.getDificultad());
                         rutasViewHolder.setImage(getContext(), rutas.getImagen());
                         rutasViewHolder.setCalificacion(rutas.getCalificacion());
                         progressDialog.dismiss();
@@ -126,9 +128,19 @@ public class RutasFragment extends Fragment {
             nombre_post.setText(nombre);
         }
 
-        public void setDetalle(String detalle){
-            TextView detalle_post = (TextView)mView.findViewById(R.id.detalle_ruta);
-            detalle_post.setText(detalle);
+        public void setDistancia(String distancia){
+            TextView distancia_post = (TextView)mView.findViewById(R.id.detalle_distancia_ruta);
+            distancia_post.setText(distancia);
+        }
+
+        public void setElevacion(String elevacion){
+            TextView elevacion_post = (TextView)mView.findViewById(R.id.detalle_elevacion_ruta);
+            elevacion_post.setText(elevacion);
+        }
+
+        public void setDificultad(String dificultad){
+            TextView dificultad_post = (TextView)mView.findViewById(R.id.detalle_dificultad_ruta);
+            dificultad_post.setText(dificultad);
         }
 
         public void setImage(Context ctx, String image){

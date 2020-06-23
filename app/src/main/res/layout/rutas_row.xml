@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="5dp"
     android:layout_margin="7dp"
     android:elevation="90dp">
     
@@ -13,45 +13,155 @@
         android:layout_width="match_parent"
         android:layout_height="248dp"
         android:orientation="vertical"
-        android:background="@color/colorAccent">
+        android:background="@color/colorPrimary">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            
+            <ImageView
+                android:layout_marginStart="5dp"
+                android:layout_width="45dp"
+                android:layout_height="65dp"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ciclis"/>
+
+            <TextView
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="1dp"
+                android:id="@+id/nombre_ruta"
+                android:layout_width="200dp"
+                android:textAlignment="textStart"
+                android:textSize="17dp"
+                android:layout_height="68dp"
+                android:textColor="#000"
+                android:fontFamily="@font/bungee"
+                android:text="Ruta fuente de oro"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+            <com.like.LikeButton
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_favor_ruta"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:icon_size="20dp"
+                app:icon_type="heart"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:id="@+id/detalle_distancia_ruta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:text="11.5 Km"/>
+
+            <TextView
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#7A7474"
+                android:textSize="16dp"
+                android:text="Distancia"/>
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:id="@+id/detalle_elevacion_ruta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:text="11.5 M"/>
+
+            <TextView
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#7A7474"
+                android:textSize="16dp"
+                android:text="Elevación"/>
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:id="@+id/detalle_dificultad_ruta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:text="Intermedio"/>
+
+            <TextView
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#7A7474"
+                android:textSize="16dp"
+                android:text="Dificultad"/>
+        </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <ImageView
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:src="@color/colorPrimaryDark"
             android:scaleType="centerCrop"
             android:id="@+id/img_ruta"/>
 
-        <TextView
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="-10dp"
-            android:id="@+id/nombre_ruta"
-            android:layout_width="match_parent"
-            android:textSize="18dp"
-            android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:fontFamily="@font/bungee"
-            android:text="Nombre Ruta"/>
-
-        <TextView
-            android:layout_marginTop="-13dp"
-            android:fontFamily="@font/baloo"
-            android:layout_marginStart="20dp"
-            android:id="@+id/detalle_ruta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:textSize="16dp"
-            android:text="Detalle Ruta"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/calificacion_ruta"
-            android:progressBackgroundTint="@color/colorPrimary"
-            android:layout_gravity="end"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:stepSize="0.1"
+            android:progressBackgroundTint="@color/colorAccent"
             android:isIndicator="true"
-            android:layout_marginTop="-89dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+            </LinearLayout>
 
+        </LinearLayout>
 
     </LinearLayout>
 

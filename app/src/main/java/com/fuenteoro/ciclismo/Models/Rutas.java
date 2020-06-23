@@ -1,15 +1,17 @@
 package com.fuenteoro.ciclismo.Models;
 
 public class Rutas {
-    private String nombre, detalle;
+    private String nombre, distancia, elevacion, dificultad;
     private Long latitud_origen, longitud_origen;
     private Long latitud_destino, longitud_destino;
     private String imagen;
     private int calificacion;
 
-    public Rutas(String nombre, String detalle, Long latitud_origen, Long longitud_origen, Long latitud_destino, Long longitud_destino, String imagen, int calificacion) {
+    public Rutas(String nombre, String distancia, String elevacion, String dificultad, Long latitud_origen, Long longitud_origen, Long latitud_destino, Long longitud_destino, String imagen, int calificacion) {
         this.nombre = nombre;
-        this.detalle = detalle;
+        this.distancia = distancia;
+        this.elevacion = elevacion;
+        this.dificultad = dificultad;
         this.latitud_origen = latitud_origen;
         this.longitud_origen = longitud_origen;
         this.latitud_destino = latitud_destino;
@@ -26,12 +28,28 @@ public class Rutas {
         this.nombre = nombre;
     }
 
-    public String getDetalle() {
-        return detalle;
+    public String getDistancia() {
+        return distancia;
     }
 
-    public void setDetalle(String detalle) {
-        this.detalle = detalle;
+    public void setDistancia(String distancia) {
+        this.distancia = distancia;
+    }
+
+    public String getElevacion() {
+        return elevacion;
+    }
+
+    public void setElevacion(String elevacion) {
+        this.elevacion = elevacion;
+    }
+
+    public String getDificultad() {
+        return dificultad;
+    }
+
+    public void setDificultad(String dificultad) {
+        this.dificultad = dificultad;
     }
 
     public Long getLatitud_origen() {
