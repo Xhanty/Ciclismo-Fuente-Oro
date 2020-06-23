@@ -79,7 +79,9 @@ public class DetallesRutaActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String nombre = dataSnapshot.child("nombre").getValue().toString();
-                        String detalle = dataSnapshot.child("detalle").getValue().toString();
+                        String distancia = dataSnapshot.child("distancia").getValue().toString();
+                        String elevacion = dataSnapshot.child("elevacion").getValue().toString();
+                        String dificultad = dataSnapshot.child("dificultad").getValue().toString();
                         Double latitud_origen = (Double) dataSnapshot.child("latitud_origen").getValue();
                         Double longitud_origen = (Double) dataSnapshot.child("longitud_origen").getValue();
                         Double latitud_destino = (Double) dataSnapshot.child("latitud_destino").getValue();
@@ -88,7 +90,7 @@ public class DetallesRutaActivity extends AppCompatActivity {
                         int calificacion = Integer.parseInt(dataSnapshot.child("calificacion").getValue().toString());
 
                         nombreruta.setText(nombre);
-                        detalleruta.setText(detalle);
+                        detalleruta.setText(distancia);
                         Picasso.with(getApplicationContext()).load(imagen).into(img_ruta);
                         calificacion_detalle.setProgress(Integer.valueOf(calificacion));
 

@@ -2,14 +2,17 @@ package com.fuenteoro.ciclismo;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.fuenteoro.ciclismo.Ciclista.PerfilFragment;
 import com.fuenteoro.ciclismo.Ciclista.RutasFragment;
 import com.fuenteoro.ciclismo.Ciclista.SitiosFragment;
@@ -65,6 +68,34 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText == null || newText.trim().isEmpty()){
+                    //new RutasFragment.rutas(this).listrutas();
+                    return false;
+
+                } else {
+                    //new RutasFragment.buscar(this).firebaseSearchRuta(newText);
+                    return false;
+                }
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

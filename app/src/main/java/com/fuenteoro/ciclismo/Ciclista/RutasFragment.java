@@ -1,17 +1,23 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,15 +26,15 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.fuenteoro.ciclismo.Models.ComentariosRutas;
 import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
-public class RutasFragment extends Fragment {
+public class RutasFragment extends Fragment{
 
     private RecyclerView mRutasList;
     private DatabaseReference mDatabase;
@@ -37,14 +43,13 @@ public class RutasFragment extends Fragment {
     FirebaseRecyclerOptions<Rutas> options;
     FirebaseRecyclerAdapter<Rutas, RutasViewHolder> adapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rutas, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas").child("ubicaciones");
+        mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
         mDatabase.keepSynced(true);
 
         mRutasList = (RecyclerView) view.findViewById(R.id.recy_rutas);
@@ -70,38 +75,7 @@ public class RutasFragment extends Fragment {
                 progressDialog.getWindow().setBackgroundDrawableResource(
                         android.R.color.transparent);
 
-                options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(mDatabase, Rutas.class).build();
-                adapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(RutasViewHolder rutasViewHolder,final int i, Rutas rutas) {
-                        rutasViewHolder.setNombre(rutas.getNombre());
-                        rutasViewHolder.setDistancia(rutas.getDistancia());
-                        rutasViewHolder.setElevacion(rutas.getElevacion());
-                        rutasViewHolder.setDificultad(rutas.getDificultad());
-                        rutasViewHolder.setImage(getContext(), rutas.getImagen());
-                        rutasViewHolder.setCalificacion(rutas.getCalificacion());
-                        progressDialog.dismiss();
-
-
-                        rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
-                                intent.putExtra("ID", getRef(i).getKey());
-                                startActivity(intent);
-                            }
-                        });
-                    }
-
-                    @NonNull
-                    @Override
-                    public RutasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rutas_row, parent, false);
-                        return new RutasViewHolder(v);
-                    }
-                };
-                adapter.startListening();
-                mRutasList.setAdapter(adapter);
+                         new rutas(getContext()).listrutas();
 
             } else {
 
@@ -114,6 +88,108 @@ public class RutasFragment extends Fragment {
                 // Commit a la transacción
                 transaction.commit();
         }
+    }
+
+    public class rutas {
+        Context context;
+
+        public rutas(Context context) {
+            this.context = context;
+        }
+
+        public void listrutas() {
+            RecyclerView mRutasList = (RecyclerView) ((Activity) context).findViewById(R.id.recy_rutas);
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
+            options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(mDatabase, Rutas.class).build();
+            adapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>(options) {
+                @Override
+                protected void onBindViewHolder(RutasViewHolder rutasViewHolder,final int i, Rutas rutas) {
+                    rutasViewHolder.setNombre(rutas.getNombre());
+                    rutasViewHolder.setDistancia(rutas.getDistancia());
+                    rutasViewHolder.setElevacion(rutas.getElevacion());
+                    rutasViewHolder.setDificultad(rutas.getDificultad());
+                    rutasViewHolder.setImage(context, rutas.getImagen());
+                    rutasViewHolder.setCalificacion(rutas.getCalificacion());
+                    progressDialog.dismiss();
+
+
+                    rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, DetallesRutaActivity.class);
+                            intent.putExtra("ID", getRef(i).getKey());
+                            startActivity(intent);
+                        }
+                    });
+                }
+
+                @NonNull
+                @Override
+                public RutasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rutas_row, parent, false);
+                    return new RutasViewHolder(v);
+                }
+
+            };
+            adapter.startListening();
+            mRutasList.setAdapter(adapter);
+        }
+    }
+
+    public class buscar{
+        Context context;
+
+        public buscar(Context context) {
+            this.context = context;
+        }
+
+        public void firebaseSearchRuta(String searchText) {
+            try {
+                RecyclerView mRutasList = (RecyclerView) ((Activity) context).findViewById(R.id.recy_rutas);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
+
+                String quary = searchText.toLowerCase();
+                Query firebaseSearch = mDatabase.orderByChild("nombre").startAt(quary).endAt(quary + "\uf8ff");
+                options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(firebaseSearch, Rutas.class).build();
+                adapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>(options) {
+                    @Override
+                    protected void onBindViewHolder(RutasViewHolder rutasViewHolder, final int i, Rutas rutas) {
+                        rutasViewHolder.setNombre(rutas.getNombre());
+                        rutasViewHolder.setDistancia(rutas.getDistancia());
+                        rutasViewHolder.setElevacion(rutas.getElevacion());
+                        rutasViewHolder.setDificultad(rutas.getDificultad());
+                        rutasViewHolder.setImage(getContext(), rutas.getImagen());
+                        rutasViewHolder.setCalificacion(rutas.getCalificacion());
+                        progressDialog.dismiss();
+
+                        rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
+                                intent.putExtra("ID", getRef(i).getKey());
+                                startActivity(intent);
+                            }
+                        });
+
+                    }
+
+                    @NonNull
+                    @Override
+                    public RutasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rutas_row, parent, false);
+                        return new RutasViewHolder(v);
+                    }
+                };
+                adapter.startListening();
+                mRutasList.setAdapter(adapter);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static class RutasViewHolder extends RecyclerView.ViewHolder {
