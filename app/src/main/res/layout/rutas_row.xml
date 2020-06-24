@@ -6,14 +6,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     app:cardCornerRadius="5dp"
-    android:layout_margin="7dp"
+    android:layout_margin="8dp"
     android:elevation="90dp">
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="248dp"
         android:orientation="vertical"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorAccent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +24,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_width="45dp"
                 android:layout_height="65dp"
-                android:background="@color/colorPrimary"
                 android:src="@drawable/ciclis"/>
 
             <TextView
@@ -35,7 +34,7 @@
                 android:textAlignment="textStart"
                 android:textSize="17dp"
                 android:layout_height="68dp"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:fontFamily="@font/bungee"
                 android:text="Ruta fuente de oro"/>
 
@@ -76,7 +75,7 @@
                 android:id="@+id/detalle_distancia_ruta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="16dp"
                 android:text="11.5 Km"/>
 
@@ -86,7 +85,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#7A7474"
+                android:textColor="#C8C3C3"
                 android:textSize="16dp"
                 android:text="Distancia"/>
 
@@ -97,7 +96,7 @@
                 android:id="@+id/detalle_elevacion_ruta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="16dp"
                 android:text="11.5 M"/>
 
@@ -107,7 +106,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#7A7474"
+                android:textColor="#C8C3C3"
                 android:textSize="16dp"
                 android:text="Elevación"/>
 
@@ -118,7 +117,7 @@
                 android:id="@+id/detalle_dificultad_ruta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="16dp"
                 android:text="Intermedio"/>
 
@@ -128,7 +127,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#7A7474"
+                android:textColor="#C8C3C3"
                 android:textSize="16dp"
                 android:text="Dificultad"/>
         </LinearLayout>
@@ -145,7 +144,7 @@
             <ImageView
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="156dp"
+            android:layout_height="140dp"
             android:src="@color/colorPrimaryDark"
             android:scaleType="centerCrop"
             android:id="@+id/img_ruta"/>
@@ -153,9 +152,12 @@
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/calificacion_ruta"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:theme="@style/RatingBar.Yellow"
             android:stepSize="0.1"
-            android:progressBackgroundTint="@color/colorAccent"
+            android:rating="0"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/colorPrimary"
             android:isIndicator="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -1,23 +1,22 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,22 +25,32 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.fuenteoro.ciclismo.Log_Reg.Fragment_Login;
+import com.fuenteoro.ciclismo.Log_Reg.Fragment_Register;
+import com.fuenteoro.ciclismo.LoginActivity;
 import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
-public class RutasFragment extends Fragment{
+import java.util.ArrayList;
+
+public class RutasFragment extends Fragment {
+
+    @StringRes
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1_ruta, R.string.tab_text_2_ruta};
+    private TabLayout tabLayout;
 
     private RecyclerView mRutasList;
     private DatabaseReference mDatabase;
-    //Progress Dialog
     ProgressDialog progressDialog;
     FirebaseRecyclerOptions<Rutas> options;
     FirebaseRecyclerAdapter<Rutas, RutasViewHolder> adapter;
+    SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,58 +58,126 @@ public class RutasFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rutas, container, false);
 
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs_rutas);
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
         mDatabase.keepSynced(true);
 
         mRutasList = (RecyclerView) view.findViewById(R.id.recy_rutas);
         mRutasList.setHasFixedSize(true);
         mRutasList.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchView = view.findViewById(R.id.bs_ruta);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                firebaseSearchRuta(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText == null || newText.trim().isEmpty()){
+                    listrutas();
+                    return false;
+                }
+
+                firebaseSearchRuta(newText);
+                return false;
+            }
+        });
         return view;
     }
+
+
+    private static class PlaceholderFragment extends Fragment {
+        private static final String ARG_STRING_NUMBER = "section_number";
+
+        private PlaceholderFragment(){
+        }
+
+        private static Fragment newInstance(int sectionNumber){
+
+            Fragment fragment = null;
+            switch (sectionNumber){
+                case 1:
+                    fragment = new RutasFragment();
+                    break;
+                case 2:
+                    fragment = new MapaRutasFragment();
+                    break;
+            }
+
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                                  Bundle savedInstanceState){
+            View rootView = inflater.inflate(R.layout.fragment_rutas, container, false);
+            return rootView;
+        }
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private SectionsPagerAdapter (FragmentManager fm){
+            super(fm);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount(){
+            //Total de páginas
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position){
+            return getResources().getString(TAB_TITLES[position]);
+        }
+
+    }
+
 
     @Override
     public void onStart() {
         super.onStart();
 
-            if(UtilsNetwork.isOnline(getContext())) {
-                //Abrimos el progressDialog
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.show();
+        if(UtilsNetwork.isOnline(getContext())) {
+            //Abrimos el progressDialog
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.show();
 
-                //Contenido
-                progressDialog.setContentView(R.layout.progress_dialog);
+            //Contenido
+            progressDialog.setContentView(R.layout.progress_dialog);
 
-                //Transparente
-                progressDialog.getWindow().setBackgroundDrawableResource(
-                        android.R.color.transparent);
+            //Transparente
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent);
 
-                         new rutas(getContext()).listrutas();
+            listrutas();
 
-            } else {
+        } else {
 
-                // Crea el nuevo fragmento y la transacción.
-                Fragment nuevoFragmento = new InternetFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_ciclista, nuevoFragmento);
-                transaction.addToBackStack(null);
+            // Crea el nuevo fragmento y la transacción.
+            Fragment nuevoFragmento = new InternetFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_ciclista, nuevoFragmento);
+            transaction.addToBackStack(null);
 
-                // Commit a la transacción
-                transaction.commit();
+            // Commit a la transacción
+            transaction.commit();
         }
     }
 
-    public class rutas {
-        Context context;
+    public void listrutas() {
 
-        public rutas(Context context) {
-            this.context = context;
-        }
-
-        public void listrutas() {
-            RecyclerView mRutasList = (RecyclerView) ((Activity) context).findViewById(R.id.recy_rutas);
-
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
             options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(mDatabase, Rutas.class).build();
             adapter = new FirebaseRecyclerAdapter<Rutas, RutasViewHolder>(options) {
                 @Override
@@ -109,7 +186,7 @@ public class RutasFragment extends Fragment{
                     rutasViewHolder.setDistancia(rutas.getDistancia());
                     rutasViewHolder.setElevacion(rutas.getElevacion());
                     rutasViewHolder.setDificultad(rutas.getDificultad());
-                    rutasViewHolder.setImage(context, rutas.getImagen());
+                    rutasViewHolder.setImage(getContext(), rutas.getImagen());
                     rutasViewHolder.setCalificacion(rutas.getCalificacion());
                     progressDialog.dismiss();
 
@@ -117,7 +194,7 @@ public class RutasFragment extends Fragment{
                     rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(context, DetallesRutaActivity.class);
+                            Intent intent = new Intent(getContext(), DetallesRutaActivity.class);
                             intent.putExtra("ID", getRef(i).getKey());
                             startActivity(intent);
                         }
@@ -135,20 +212,9 @@ public class RutasFragment extends Fragment{
             adapter.startListening();
             mRutasList.setAdapter(adapter);
         }
-    }
 
-    public class buscar{
-        Context context;
-
-        public buscar(Context context) {
-            this.context = context;
-        }
-
-        public void firebaseSearchRuta(String searchText) {
+    public void firebaseSearchRuta(String searchText) {
             try {
-                RecyclerView mRutasList = (RecyclerView) ((Activity) context).findViewById(R.id.recy_rutas);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
-
                 String quary = searchText.toLowerCase();
                 Query firebaseSearch = mDatabase.orderByChild("nombre").startAt(quary).endAt(quary + "\uf8ff");
                 options = new FirebaseRecyclerOptions.Builder<Rutas>().setQuery(firebaseSearch, Rutas.class).build();
@@ -182,6 +248,7 @@ public class RutasFragment extends Fragment{
                         return new RutasViewHolder(v);
                     }
                 };
+
                 adapter.startListening();
                 mRutasList.setAdapter(adapter);
 
@@ -189,8 +256,6 @@ public class RutasFragment extends Fragment{
                 e.printStackTrace();
             }
         }
-
-    }
 
     public static class RutasViewHolder extends RecyclerView.ViewHolder {
         View mView;

@@ -26,6 +26,9 @@
     <string name="result_awesome">Empieza ya!</string>
     <string name="thank_you">Gracias por elegirnos</string>
     <string name="after_updating">Empieza a recorrer Fuente de oro y a descubrir sus maravillas</string>
+
+    <string name="tab_text_1_ruta">Lista</string>
+    <string name="tab_text_2_ruta">Mapa</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

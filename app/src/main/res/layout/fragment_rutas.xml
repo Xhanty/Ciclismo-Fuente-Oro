@@ -2,15 +2,45 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#ccc"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     tools:context=".Ciclista.RutasFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs_rutas"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:tabTextColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="?attr/colorPrimary" />
+
+        <androidx.appcompat.widget.SearchView
+            app:queryHint="Buscar"
+            android:id="@+id/bs_ruta"
+            android:background="@color/colorPrimary"
+            android:inputType="textNoSuggestions"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"/>
+            </com.google.android.material.appbar.AppBarLayout>
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
         android:id="@+id/recy_rutas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </FrameLayout>
