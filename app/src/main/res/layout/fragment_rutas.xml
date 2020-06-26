@@ -14,29 +14,68 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs_rutas"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:tabTextColor="@color/colorPrimary"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="?attr/colorPrimary" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:tooltipText="Mapa"
+                    android:layout_marginRight="1dp"
+                    android:id="@+id/btn_mapa_ruta"
+                    android:src="@drawable/ic_baseline_location_on_24"
+                    android:layout_width="100dp"
+                    android:minHeight="?actionBarSize"
+                    android:background="#fff"
+                    android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:minHeight="?actionBarSize"
+                android:gravity="center"
+                android:padding="@dimen/appbar_padding"
+                android:background="#fff"
+                android:textColor="#000"
+                android:text="Rutas"
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"/>
 
         <androidx.appcompat.widget.SearchView
             app:queryHint="Buscar"
             android:id="@+id/bs_ruta"
-            android:background="@color/colorPrimary"
             android:inputType="textNoSuggestions"
+            android:background="@color/colorPrimaryDark"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="35dp"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"/>
             </com.google.android.material.appbar.AppBarLayout>
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:id="@+id/recy_rutas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

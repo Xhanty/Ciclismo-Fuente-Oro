@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class SitiosFragment extends Fragment {
 
     private RecyclerView mRutasList;
     private DatabaseReference mDatabase;
+    ImageButton mapasitio;
 
     //Progress Dialog
     ProgressDialog progressDialog;
@@ -45,6 +47,14 @@ public class SitiosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sitios, container, false);
+
+        mapasitio = view.findViewById(R.id.btn_mapa_sitio);
+        mapasitio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Mapa de los sitios", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios").child("ubicaciones");
         mDatabase.keepSynced(true);

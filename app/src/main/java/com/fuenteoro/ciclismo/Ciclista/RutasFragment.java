@@ -19,9 +19,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -41,25 +43,19 @@ import java.util.ArrayList;
 
 public class RutasFragment extends Fragment {
 
-    @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1_ruta, R.string.tab_text_2_ruta};
-    private TabLayout tabLayout;
-
     private RecyclerView mRutasList;
     private DatabaseReference mDatabase;
     ProgressDialog progressDialog;
     FirebaseRecyclerOptions<Rutas> options;
     FirebaseRecyclerAdapter<Rutas, RutasViewHolder> adapter;
     SearchView searchView;
+    ImageButton mapabtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rutas, container, false);
-
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs_rutas);
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Rutas").child("ubicaciones");
         mDatabase.keepSynced(true);
@@ -68,6 +64,16 @@ public class RutasFragment extends Fragment {
         mRutasList.setHasFixedSize(true);
         mRutasList.setLayoutManager(new LinearLayoutManager(getContext()));
         searchView = view.findViewById(R.id.bs_ruta);
+        mapabtn = view.findViewById(R.id.btn_mapa_ruta);
+
+        mapabtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), RutaMapActivity.class);
+                startActivity(intent);
+                Toast.makeText(getContext(), "Mapa de la rutas", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -89,61 +95,6 @@ public class RutasFragment extends Fragment {
         });
         return view;
     }
-
-
-    private static class PlaceholderFragment extends Fragment {
-        private static final String ARG_STRING_NUMBER = "section_number";
-
-        private PlaceholderFragment(){
-        }
-
-        private static Fragment newInstance(int sectionNumber){
-
-            Fragment fragment = null;
-            switch (sectionNumber){
-                case 1:
-                    fragment = new RutasFragment();
-                    break;
-                case 2:
-                    fragment = new MapaRutasFragment();
-                    break;
-            }
-
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                                  Bundle savedInstanceState){
-            View rootView = inflater.inflate(R.layout.fragment_rutas, container, false);
-            return rootView;
-        }
-    }
-
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private SectionsPagerAdapter (FragmentManager fm){
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount(){
-            //Total de páginas
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position){
-            return getResources().getString(TAB_TITLES[position]);
-        }
-
-    }
-
 
     @Override
     public void onStart() {
