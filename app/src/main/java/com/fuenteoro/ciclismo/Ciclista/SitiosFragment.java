@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,31 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.fuenteoro.ciclismo.Models.ComentariosRutas;
 import com.fuenteoro.ciclismo.Models.Sitios;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Utils.RutasUtilidades;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class SitiosFragment extends Fragment {
 
@@ -52,7 +69,11 @@ public class SitiosFragment extends Fragment {
         mapasitio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Mapa de los sitios", Toast.LENGTH_SHORT).show();
+                SitioMapFragment fr = new SitioMapFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_ciclista,fr)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

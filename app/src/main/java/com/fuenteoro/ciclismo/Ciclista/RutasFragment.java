@@ -229,6 +229,44 @@ public class RutasFragment extends Fragment {
             }
         }
 
+    public static class RutasViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+        public RutasViewHolder(View itemView){
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setNombre(String nombre){
+            TextView nombre_post = (TextView)mView.findViewById(R.id.nombre_ruta);
+            nombre_post.setText(nombre);
+        }
+
+        public void setDistancia(String distancia){
+            TextView distancia_post = (TextView)mView.findViewById(R.id.detalle_distancia_ruta);
+            distancia_post.setText(distancia);
+        }
+
+        public void setElevacion(String elevacion){
+            TextView elevacion_post = (TextView)mView.findViewById(R.id.detalle_elevacion_ruta);
+            elevacion_post.setText(elevacion);
+        }
+
+        public void setDificultad(String dificultad){
+            TextView dificultad_post = (TextView)mView.findViewById(R.id.detalle_dificultad_ruta);
+            dificultad_post.setText(dificultad);
+        }
+
+        public void setImage(Context ctx, String image){
+            ImageView image_post = (ImageView)mView.findViewById(R.id.img_ruta);
+            Picasso.with(ctx).load(image).into(image_post);
+        }
+
+        public void setCalificacion(int calificacion){
+            RatingBar calificacion_post = (RatingBar)mView.findViewById(R.id.calificacion_ruta);
+            calificacion_post.setProgress(Integer.valueOf(calificacion));
+        }
+    }
+
     private void webServiceObtenerRuta(String latitudInicial, String longitudInicial, String latitudFinal, String longitudFinal) {
 
         String url="https://maps.googleapis.com/maps/api/directions/json?origin="+latitudInicial+","+longitudInicial
@@ -289,7 +327,6 @@ public class RutasFragment extends Fragment {
             }
         }
         );
-
         request.add(jsonObjectRequest);
     }
 
@@ -372,41 +409,4 @@ public class RutasFragment extends Fragment {
         return poly;
     }
 
-    public static class RutasViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-        public RutasViewHolder(View itemView){
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setNombre(String nombre){
-            TextView nombre_post = (TextView)mView.findViewById(R.id.nombre_ruta);
-            nombre_post.setText(nombre);
-        }
-
-        public void setDistancia(String distancia){
-            TextView distancia_post = (TextView)mView.findViewById(R.id.detalle_distancia_ruta);
-            distancia_post.setText(distancia);
-        }
-
-        public void setElevacion(String elevacion){
-            TextView elevacion_post = (TextView)mView.findViewById(R.id.detalle_elevacion_ruta);
-            elevacion_post.setText(elevacion);
-        }
-
-        public void setDificultad(String dificultad){
-            TextView dificultad_post = (TextView)mView.findViewById(R.id.detalle_dificultad_ruta);
-            dificultad_post.setText(dificultad);
-        }
-
-        public void setImage(Context ctx, String image){
-            ImageView image_post = (ImageView)mView.findViewById(R.id.img_ruta);
-            Picasso.with(ctx).load(image).into(image_post);
-        }
-
-        public void setCalificacion(int calificacion){
-            RatingBar calificacion_post = (RatingBar)mView.findViewById(R.id.calificacion_ruta);
-            calificacion_post.setProgress(Integer.valueOf(calificacion));
-        }
-    }
 }

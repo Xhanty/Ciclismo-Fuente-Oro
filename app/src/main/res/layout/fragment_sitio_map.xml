@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:tooltipText="Mapa"
+                    android:layout_marginRight="1dp"
+                    android:id="@+id/btn_mapa_lista_s"
+                    android:src="@drawable/ic_baseline_format_list_numbered_24"
+                    android:layout_width="100dp"
+                    android:minHeight="?actionBarSize"
+                    android:background="#fff"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:minHeight="?actionBarSize"
+                    android:gravity="center"
+                    android:padding="@dimen/appbar_padding"
+                    android:background="#fff"
+                    android:textColor="#000"
+                    android:text="Sitios"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- TODO: Update blank fragment layout -->
+
+<fragment
+    android:id="@+id/map_sitio"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Ciclista.SitioMapFragment" />
+
+    </LinearLayout>
+</FrameLayout>
