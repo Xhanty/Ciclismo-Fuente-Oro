@@ -40,10 +40,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Ciclista.RutaMapActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".Ciclista.DetalleSitioActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

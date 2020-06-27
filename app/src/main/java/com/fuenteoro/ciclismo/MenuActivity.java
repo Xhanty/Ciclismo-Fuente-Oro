@@ -33,6 +33,7 @@ public class MenuActivity extends AppCompatActivity {
 
         if (savedInstanceState==null){
             bottomNav.setItemSelected(R.id.home_ciclista, true);
+
             fragmentManager = getSupportFragmentManager();
             RutasFragment rutasFragment = new RutasFragment();
             fragmentManager.beginTransaction()

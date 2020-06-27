@@ -1,4 +1,6 @@
-package com.fuenteoro.ciclismo.Models;
+package com.fuenteoro.ciclismo.Utils;
+
+import com.fuenteoro.ciclismo.Models.Rutas;
 
 import java.util.ArrayList;
 import java.util.HashMap;
