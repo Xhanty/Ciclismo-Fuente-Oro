@@ -2,12 +2,12 @@ package com.fuenteoro.ciclismo.Models;
 
 public class Rutas {
     private String nombre, distancia, elevacion, dificultad;
-    private Double latitud_origen, longitud_origen;
-    private Double latitud_destino, longitud_destino;
+    private double latitud_origen, longitud_origen;
+    private double latitud_destino, longitud_destino;
     private String imagen;
     private int calificacion;
 
-    public Rutas(String nombre, String distancia, String elevacion, String dificultad, Double latitud_origen, Double longitud_origen, Double latitud_destino, Double longitud_destino, String imagen, int calificacion) {
+    public Rutas(String nombre, String distancia, String elevacion, String dificultad, double latitud_origen, double longitud_origen, double latitud_destino, double longitud_destino, String imagen, int calificacion) {
         this.nombre = nombre;
         this.distancia = distancia;
         this.elevacion = elevacion;
@@ -52,35 +52,35 @@ public class Rutas {
         this.dificultad = dificultad;
     }
 
-    public Double getLatitud_origen() {
+    public double getLatitud_origen() {
         return latitud_origen;
     }
 
-    public void setLatitud_origen(Double latitud_origen) {
+    public void setLatitud_origen(double latitud_origen) {
         this.latitud_origen = latitud_origen;
     }
 
-    public Double getLongitud_origen() {
+    public double getLongitud_origen() {
         return longitud_origen;
     }
 
-    public void setLongitud_origen(Double longitud_origen) {
+    public void setLongitud_origen(double longitud_origen) {
         this.longitud_origen = longitud_origen;
     }
 
-    public Double getLatitud_destino() {
+    public double getLatitud_destino() {
         return latitud_destino;
     }
 
-    public void setLatitud_destino(Double latitud_destino) {
+    public void setLatitud_destino(double latitud_destino) {
         this.latitud_destino = latitud_destino;
     }
 
-    public Double getLongitud_destino() {
+    public double getLongitud_destino() {
         return longitud_destino;
     }
 
-    public void setLongitud_destino(Double longitud_destino) {
+    public void setLongitud_destino(double longitud_destino) {
         this.longitud_destino = longitud_destino;
     }
 
