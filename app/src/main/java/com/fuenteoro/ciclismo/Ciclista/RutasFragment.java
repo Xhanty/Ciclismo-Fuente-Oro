@@ -57,8 +57,6 @@ public class RutasFragment extends Fragment {
     FirebaseRecyclerAdapter<Rutas, RutasViewHolder> adapter;
     SearchView searchView;
     ImageButton mapabtn;
-    //String Latitud_Origen = "3.462", Longitud_Origen = "-73.629";
-    //String Latitud_Destino = "3.455", Longitud_Destino = "-73.614";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,13 +76,6 @@ public class RutasFragment extends Fragment {
         mapabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*RutasUtilidades.coordenadas.setLatitud_origen(Double.valueOf(Latitud_Origen));
-                RutasUtilidades.coordenadas.setLongitud_origen(Double.valueOf(Longitud_Origen));
-                RutasUtilidades.coordenadas.setLatitud_destino(Double.valueOf(Latitud_Destino));
-                RutasUtilidades.coordenadas.setLongitud_destino(Double.valueOf(Longitud_Destino));
-
-                webServiceObtenerRuta(Latitud_Origen, Longitud_Origen, Latitud_Destino, Longitud_Destino);*/
-
                 RutaMapFragment fr = new RutaMapFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_ciclista,fr)
