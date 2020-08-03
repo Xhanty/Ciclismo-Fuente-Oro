@@ -66,5 +66,4 @@ android:orientation="vertical">
         tools:context=".Ciclista.RutaMapFragment" />
 
 </LinearLayout>
-
 </FrameLayout>

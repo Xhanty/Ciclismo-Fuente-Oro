@@ -139,11 +139,13 @@ public class DetallesRutaActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+progressDialog.dismiss();
 
                 }
             });
 
         } else{
+progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "NO WIFI", Toast.LENGTH_LONG).show();
         }
     }

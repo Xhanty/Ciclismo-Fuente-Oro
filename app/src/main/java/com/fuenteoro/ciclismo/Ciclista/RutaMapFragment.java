@@ -77,169 +77,25 @@ public class RutaMapFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             if (UtilsNetwork.isOnline(getContext())) {
                 mMap = googleMap;
-                mDatabase.child("Rutas").child("ubicaciones").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for(Marker marker:realtimeMarkers){
-                                marker.remove();
-                                arraymedi.clear();
-                            }
-
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                rutas = snapshot.getValue(Rutas.class);
-                                String nombre = rutas.getNombre();
-                                double latitud_origen = rutas.getLatitud_origen();
-                                double longitud_origen = rutas.getLongitud_origen();
-                                double latitud_destino = rutas.getLatitud_destino();
-                                double longitud_destino = rutas.getLongitud_destino();
-
-                                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                                MarkerOptions markerOptions = new MarkerOptions();
-                                LatLng medicion = new LatLng(latitud_origen, longitud_origen);
-                                LatLng destino = new LatLng(latitud_destino, longitud_destino);
-                                markerOptions.position(medicion)
-                                        .title(nombre)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.rutamap));
-                                tmpRealtimeMarker.add(mMap.addMarker(markerOptions));
-
-                                arraymedi.add(medicion);
-                                arraymedi.add(destino);
-
-                            }
-                            realtimeMarkers.clear();
-                            realtimeMarkers.addAll(tmpRealtimeMarker);
-
-                        } else {
-                            Toast.makeText(getContext(), "Hasta el momento no hay rutas", Toast.LENGTH_SHORT);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), "A ocurrido un error, intenta más tarde", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                LatLng origen = new LatLng(3.467, -73.617);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origen, 14));
+                Mapa();
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         double la = marker.getPosition().latitude;
                         double lo = marker.getPosition().longitude;
-                        LatLng vv = new LatLng(la,lo);
+                        LatLng vv = new LatLng(la, lo);
                         int bb = arraymedi.indexOf(vv) + 1;
                         mMap.clear();
-                        mDatabase.child("Rutas").child("ubicaciones").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for(Marker marker:realtimeMarkers){
-                                        marker.remove();
-                                        arraymedi.clear();
-                                    }
-
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        rutas = snapshot.getValue(Rutas.class);
-                                        String nombre = rutas.getNombre();
-                                        double latitud_origen = rutas.getLatitud_origen();
-                                        double longitud_origen = rutas.getLongitud_origen();
-                                        double latitud_destino = rutas.getLatitud_destino();
-                                        double longitud_destino = rutas.getLongitud_destino();
-
-                                        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                                        MarkerOptions markerOptions = new MarkerOptions();
-                                        LatLng medicion = new LatLng(latitud_origen, longitud_origen);
-                                        LatLng destino = new LatLng(latitud_destino, longitud_destino);
-                                        markerOptions.position(medicion)
-                                                .title(nombre)
-                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rutamap));
-                                        tmpRealtimeMarker.add(mMap.addMarker(markerOptions));
-
-                                        arraymedi.add(medicion);
-                                        arraymedi.add(destino);
-
-                                    }
-                                    realtimeMarkers.clear();
-                                    realtimeMarkers.addAll(tmpRealtimeMarker);
-
-                                } else {
-                                    Toast.makeText(getContext(), "Hasta el momento no hay rutas", Toast.LENGTH_SHORT);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Toast.makeText(getContext(), "A ocurrido un error, intenta más tarde", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        LatLng origen = new LatLng(3.467, -73.617);
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origen, 14));
-
-                        /*Toast.makeText(getContext(),
-                                  "Latitud_Origen: " + marker.getPosition().latitude + "\n" +
-                                        "Longitud_Origen: " + marker.getPosition().longitude + "\n" +
-                                        "Latitud_Destino: " + arraymedi.get(bb).latitude + "\n" +
-                                        "Longitud_Destino: " + arraymedi.get(bb).longitude,
-                                        Toast.LENGTH_SHORT).show();*/
-
-                        String Latitud_Origen = String.valueOf(marker.getPosition().latitude);
-                        String Longitud_Origen = String.valueOf(marker.getPosition().longitude);
-                        String Latitud_Destino = String.valueOf(arraymedi.get(bb).latitude);
-                        String Longitud_Destino = String.valueOf(arraymedi.get(bb).longitude);
+                        Mapa();
 
                         RutasUtilidades.coordenadas.setLatitud_origen(marker.getPosition().latitude);
                         RutasUtilidades.coordenadas.setLongitud_origen(marker.getPosition().longitude);
                         RutasUtilidades.coordenadas.setLatitud_destino(arraymedi.get(bb).latitude);
                         RutasUtilidades.coordenadas.setLongitud_destino(arraymedi.get(bb).longitude);
 
-                        webServiceObtenerRuta(Latitud_Origen, Longitud_Origen, Latitud_Destino, Longitud_Destino);
-
-                        LatLng center = null;
-                        ArrayList<LatLng> points = null;
-                        PolylineOptions lineOptions = null;
-
-                        // setUpMapIfNeeded();
-
-                        // recorriendo todas las rutas
-                        for (int i = 0; i < RutasUtilidades.routes.size(); i++) {
-                            points = new ArrayList<LatLng>();
-                            lineOptions = new PolylineOptions();
-
-                            // Obteniendo el detalle de la ruta
-                            List<HashMap<String, String>> path = RutasUtilidades.routes.get(i);
-
-                            // Obteniendo todos los puntos y/o coordenadas de la ruta
-                            for (int j = 0; j < path.size(); j++) {
-                                HashMap<String, String> point = path.get(j);
-
-                                double lat = Double.parseDouble(Objects.requireNonNull(point.get("lat")));
-                                double lng = Double.parseDouble(Objects.requireNonNull(point.get("lng")));
-
-                                LatLng position = new LatLng(lat, lng);
-
-                                if (center == null) {
-                                    //Obtengo la 1ra coordenada para centrar el mapa en la misma.
-                                    center = new LatLng(lat, lng);
-                                }
-                                points.add(position);
-                            }
-
-                            // Agregamos todos los puntos en la ruta al objeto LineOptions
-                            lineOptions.addAll(points);
-                            //Definimos el grosor de las Polilíneas
-                            lineOptions.width(7);
-                            //Definimos el color de la Polilíneas
-                            lineOptions.color(Color.rgb(7, 137, 48));
-                        }
-                        // Dibujamos las Polilineas en el Google Map para cada ruta
-                        if (points != null) {
-                            mMap.addPolyline(lineOptions);
-                        }
-
-                            LatLng destino = new LatLng(RutasUtilidades.coordenadas.getLatitud_destino(), RutasUtilidades.coordenadas.getLongitud_destino());
-                            mMap.addMarker(new MarkerOptions().position(destino));
+                        Ruta(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude),
+                                String.valueOf(arraymedi.get(bb).latitude), String.valueOf(arraymedi.get(bb).longitude));
 
                         return false;
                     }
@@ -289,6 +145,108 @@ public class RutaMapFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+    }
+
+    private void Mapa() {
+        mDatabase.child("Rutas").child("ubicaciones").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for(Marker marker:realtimeMarkers){
+                        marker.remove();
+                        arraymedi.clear();
+                    }
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        rutas = snapshot.getValue(Rutas.class);
+                        String nombre = rutas.getNombre();
+                        double latitud_origen = rutas.getLatitud_origen();
+                        double longitud_origen = rutas.getLongitud_origen();
+                        double latitud_destino = rutas.getLatitud_destino();
+                        double longitud_destino = rutas.getLongitud_destino();
+
+                        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        LatLng medicion = new LatLng(latitud_origen, longitud_origen);
+                        LatLng destino = new LatLng(latitud_destino, longitud_destino);
+                        markerOptions.position(medicion)
+                                .title(nombre)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rutamap));
+                        tmpRealtimeMarker.add(mMap.addMarker(markerOptions));
+
+                        arraymedi.add(medicion);
+                        arraymedi.add(destino);
+
+                    }
+                    realtimeMarkers.clear();
+                    realtimeMarkers.addAll(tmpRealtimeMarker);
+
+                } else {
+                    Toast.makeText(getContext(), "Hasta el momento no hay rutas", Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "A ocurrido un error, intenta más tarde", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        LatLng origen = new LatLng(3.467, -73.617);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origen, 14));
+
+    }
+
+    private void Ruta(String Latitud_Origen, String Longitud_Origen, String Latitud_Destino, String Longitud_Destino){
+
+        webServiceObtenerRuta(Latitud_Origen, Longitud_Origen, Latitud_Destino, Longitud_Destino);
+
+        LatLng center = null;
+        ArrayList<LatLng> points = null;
+        PolylineOptions lineOptions = null;
+
+        // setUpMapIfNeeded();
+
+        // recorriendo todas las rutas
+        for (int i = 0; i < RutasUtilidades.routes.size(); i++) {
+            points = new ArrayList<LatLng>();
+            lineOptions = new PolylineOptions();
+
+            // Obteniendo el detalle de la ruta
+            List<HashMap<String, String>> path = RutasUtilidades.routes.get(i);
+
+            // Obteniendo todos los puntos y/o coordenadas de la ruta
+            for (int j = 0; j < path.size(); j++) {
+                HashMap<String, String> point = path.get(j);
+
+                double lat = Double.parseDouble(Objects.requireNonNull(point.get("lat")));
+                double lng = Double.parseDouble(Objects.requireNonNull(point.get("lng")));
+
+                LatLng position = new LatLng(lat, lng);
+
+                if (center == null) {
+                    //Obtengo la 1ra coordenada para centrar el mapa en la misma.
+                    center = new LatLng(lat, lng);
+                }
+                points.add(position);
+            }
+
+            // Agregamos todos los puntos en la ruta al objeto LineOptions
+            lineOptions.addAll(points);
+            //Definimos el grosor de las Polilíneas
+            lineOptions.width(7);
+            //Definimos el color de la Polilíneas
+            lineOptions.color(Color.rgb(7, 137, 48));
+        }
+        // Dibujamos las Polilineas en el Google Map para cada ruta
+        if (points != null) {
+            mMap.addPolyline(lineOptions);
+        }
+
+        LatLng destino = new LatLng(RutasUtilidades.coordenadas.getLatitud_destino(), RutasUtilidades.coordenadas.getLongitud_destino());
+        mMap.addMarker(new MarkerOptions().position(destino));
+
+
     }
 
     public void webServiceObtenerRuta(String latitudInicial, String longitudInicial, String latitudFinal, String longitudFinal) {
