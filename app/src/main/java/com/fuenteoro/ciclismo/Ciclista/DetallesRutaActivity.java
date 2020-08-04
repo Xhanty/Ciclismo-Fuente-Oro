@@ -47,16 +47,16 @@ public class DetallesRutaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalles_ruta);
 
         ID = getIntent().getStringExtra("ID");
-        nombreruta = findViewById(R.id.nombre_ruta_detalle);
-        detalleruta = findViewById(R.id.detalle_ruta_detalle);
-        img_ruta = findViewById(R.id.img_ruta_detalle);
-        calificacion_detalle = findViewById(R.id.calificacion_ruta_detalle);
+        //nombreruta = findViewById(R.id.nombre_ruta_detalle);
+        //detalleruta = findViewById(R.id.detalle_ruta_detalle);
+        //img_ruta = findViewById(R.id.img_ruta_detalle);
+        //calificacion_detalle = findViewById(R.id.calificacion_ruta_detalle);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         IDCC = Integer.parseInt(ID);
 
-        mRutasList = (RecyclerView) findViewById(R.id.recy_rutas_detalles_c);
+       // mRutasList = (RecyclerView) findViewById(R.id.recy_rutas_detalles_c);
     }
 
     @Override
@@ -89,10 +89,10 @@ public class DetallesRutaActivity extends AppCompatActivity {
                         String imagen = dataSnapshot.child("imagen").getValue().toString();
                         int calificacion = Integer.parseInt(dataSnapshot.child("calificacion").getValue().toString());
 
-                        nombreruta.setText(nombre);
-                        detalleruta.setText(distancia);
-                        Picasso.with(getApplicationContext()).load(imagen).into(img_ruta);
-                        calificacion_detalle.setProgress(Integer.valueOf(calificacion));
+                        //nombreruta.setText(nombre);
+                        //detalleruta.setText(distancia);
+                        //Picasso.with(getApplicationContext()).load(imagen).into(img_ruta);
+                        //calificacion_detalle.setProgress(Integer.valueOf(calificacion));
 
                     } else {
                         Toast.makeText(getApplicationContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
@@ -106,7 +106,7 @@ public class DetallesRutaActivity extends AppCompatActivity {
             });
             final Query query = FirebaseDatabase.getInstance().getReference("Rutas").child("comentarios").orderByChild("ruta").equalTo(IDCC);
 
-            query.addValueEventListener(new ValueEventListener() {
+            /*query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
@@ -143,7 +143,7 @@ progressDialog.dismiss();
 
                 }
             });
-
+*/
         } else{
 progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "NO WIFI", Toast.LENGTH_LONG).show();

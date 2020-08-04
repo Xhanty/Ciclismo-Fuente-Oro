@@ -20,8 +20,7 @@ import com.squareup.picasso.Picasso;
 public class DetalleSitioActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    TextView nombresitio, detallesitio;
-    ImageView img_sitio;
+    TextView nombresitio, detallesitio, longitud, latitud;
     private String ID;
     RatingBar calificacion_detalle_sitio;
 
@@ -33,7 +32,8 @@ public class DetalleSitioActivity extends AppCompatActivity {
         ID = getIntent().getStringExtra("ID");
         nombresitio = findViewById(R.id.nombre_sitio_detalle);
         detallesitio = findViewById(R.id.detalle_sitio_detalle);
-        img_sitio = findViewById(R.id.img_sitio_detalle);
+        longitud = findViewById(R.id.longitud_sitio_detalle);
+        latitud = findViewById(R.id.latitud_sitio_detalle);
         calificacion_detalle_sitio = findViewById(R.id.calificacion_sitio_detalle);
 
 
@@ -50,8 +50,10 @@ public class DetalleSitioActivity extends AppCompatActivity {
                     int calificacion = Integer.parseInt(dataSnapshot.child("calificacion").getValue().toString());
 
                     nombresitio.setText(nombre);
+                    latitud.setText(String.valueOf(latitud_sitio));
+                    longitud.setText(String.valueOf(longitud_sitio));
                     detallesitio.setText(detalle);
-                    Picasso.with(getApplicationContext()).load(imagen).into(img_sitio);
+                    //Picasso.with(getApplicationContext()).load(imagen).into(img_sitio);
                     calificacion_detalle_sitio.setProgress(Integer.valueOf(calificacion));
 
                 } else {

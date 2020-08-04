@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="@color/colorPrimary"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     tools:context=".Ciclista.DetallesRutaActivity">
 
     <LinearLayout
@@ -13,75 +13,213 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:cardCornerRadius="12dp"
-        android:layout_margin="7dp"
-        android:elevation="90dp">
+        <!--
+        <fragment
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map_detalle_sitio"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            tools:context=".Ciclista.DetalleSitioActivity" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:background="@drawable/btnlogin"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textAllCaps="false"
+            android:layout_marginRight="20dp"
+            android:layout_height="wrap_content"
+            android:text="Ir a la ruta"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="25dp"/>
+
+        <fragment
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+         -->
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="248dp"
-            android:orientation="vertical"
-            android:background="@color/colorAccent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:id="@+id/img_ruta_detalle"/>
-
-            <TextView
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="-10dp"
-                android:id="@+id/nombre_ruta_detalle"
-                android:layout_width="match_parent"
-                android:textSize="18dp"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:fontFamily="@font/bungee"
-                android:text="Nombre Ruta"/>
-
-            <TextView
-                android:layout_marginTop="-13dp"
-                android:fontFamily="@font/baloo"
-                android:layout_marginStart="20dp"
-                android:id="@+id/detalle_ruta_detalle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:textSize="16dp"
-                android:text="Detalle Ruta"/>
-
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/calificacion_ruta_detalle"
-                android:progressBackgroundTint="@color/colorPrimary"
-                android:layout_gravity="end"
-                android:isIndicator="true"
-                android:layout_marginTop="-89dp"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distacia"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4,94 km"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dificultad técnica"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Moderado"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="26dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Desnivel\nsubiendo"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="814 m"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiempo total"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 h 15 min"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recy_rutas_detalles_c"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Altitud\nmáxima"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.276 m"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="52dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Altitud mínima"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#6C6666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.437 m"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/baloo"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>
