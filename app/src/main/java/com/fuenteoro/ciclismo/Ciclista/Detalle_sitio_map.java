@@ -1,4 +1,4 @@
-package com.fuenteoro.ciclismo;
+package com.fuenteoro.ciclismo.Ciclista;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.fuenteoro.ciclismo.Models.Rutas;
+import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -2,6 +2,8 @@ package com.fuenteoro.ciclismo.Ciclista;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -9,7 +11,10 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.fuenteoro.ciclismo.Models.GaleriaSitios;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Utils.RecyclerGaleria;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class DetalleSitioActivity extends AppCompatActivity {
+
+    TextView autor;
+    RecyclerView galeria;
+    ArrayList<GaleriaSitios> listGaleria;
+    RecyclerGaleria adapter;
 
     private DatabaseReference mDatabase;
     TextView nombresitio, detallesitio, longitud, latitud;
@@ -35,6 +47,18 @@ public class DetalleSitioActivity extends AppCompatActivity {
         longitud = findViewById(R.id.longitud_sitio_detalle);
         latitud = findViewById(R.id.latitud_sitio_detalle);
         calificacion_detalle_sitio = findViewById(R.id.calificacion_sitio_detalle);
+
+        autor = findViewById(R.id.autor_galeria_sitio_detalle);
+        galeria = findViewById(R.id.galeria_sitio_detalle);
+        galeria.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        listGaleria = new GaleriaSitios().galeriaSitios();
+        adapter = new RecyclerGaleria(listGaleria, new RecyclerGaleria.OnclickRecycler() {
+            @Override
+            public void OnClicItemRecycler(GaleriaSitios galeriasitios) {
+                //Glide.with(this).load(galeriasitios.getImagen()).into()
+            }
+        });
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
