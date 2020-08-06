@@ -1,11 +1,17 @@
 package com.fuenteoro.ciclismo.Ciclista;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class DetalleSitioActivity extends AppCompatActivity {
+public class DetalleSitioActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView autor;
     RecyclerView galeria;
@@ -35,6 +41,11 @@ public class DetalleSitioActivity extends AppCompatActivity {
     TextView nombresitio, detallesitio, longitud, latitud;
     private String ID;
     RatingBar calificacion_detalle_sitio;
+    Button ir_sitio;
+
+    String nombre;
+    Double latitud_sitio;
+    Double longitud_sitio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,15 @@ public class DetalleSitioActivity extends AppCompatActivity {
         galeria.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         listGaleria = new GaleriaSitios().galeriaSitios();
+        ir_sitio = findViewById(R.id.btn_ir_sitio);
+        ir_sitio.setOnClickListener(this);
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
+    }
+
+    @Override
+    protected void onStart() {
         adapter = new RecyclerGaleria(listGaleria, new RecyclerGaleria.OnclickRecycler() {
             @Override
             public void OnClicItemRecycler(GaleriaSitios galeriasitios) {
@@ -60,16 +80,14 @@ public class DetalleSitioActivity extends AppCompatActivity {
             }
         });
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
         mDatabase.child("ubicaciones").child(ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String nombre = dataSnapshot.child("nombre").getValue().toString();
+                    nombre = dataSnapshot.child("nombre").getValue().toString();
                     String detalle = dataSnapshot.child("detalle").getValue().toString();
-                    Double latitud_sitio = (Double) dataSnapshot.child("latitud_sitio").getValue();
-                    Double longitud_sitio = (Double) dataSnapshot.child("longitud_sitio").getValue();
+                    latitud_sitio = (Double) dataSnapshot.child("latitud_sitio").getValue();
+                    longitud_sitio = (Double) dataSnapshot.child("longitud_sitio").getValue();
                     String imagen = dataSnapshot.child("imagen").getValue().toString();
                     int calificacion = Integer.parseInt(dataSnapshot.child("calificacion").getValue().toString());
 
@@ -90,5 +108,53 @@ public class DetalleSitioActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
             }
         });
+        super.onStart();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == ir_sitio){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Selecciona una opción");
+            builder.setIcon(R.drawable.ic_buscar);
+
+            final CharSequence[] opciones = new CharSequence[2];
+            opciones[0] = "Dirigirse con conexión";
+            opciones[1] = "Dirigirse sin conexión";
+
+            builder.setItems(opciones, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (opciones[which] == opciones[0]){
+                        //CON CONEXIÓN
+
+                    } else {
+                        //SIN CONEXIÓN
+                        try {
+
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("geo:"+latitud_sitio+","+longitud_sitio+"?z=16&q="+latitud_sitio+","+longitud_sitio+"("+nombre+")"));
+                            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                            startActivity(intent);
+
+                        } catch (Exception e) {
+                            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
+                            startActivity( new Intent(Intent.ACTION_VIEW, uri));
+                        }
+                    }
+                }
+            });
+
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
 }

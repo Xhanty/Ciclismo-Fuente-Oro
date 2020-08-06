@@ -40,6 +40,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".Rutas.RecoridoRutaActivity"
+            android:label="@string/title_activity_reccorido_ruta"></activity>
+        <activity
+            android:name=".Sitios.RecorridoSitioActivity"
+            android:label="@string/title_activity_recorrido_sitio" />
+        <activity
             android:name=".Ciclista.DetalleSitioActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
