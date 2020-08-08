@@ -3,6 +3,7 @@ package com.fuenteoro.ciclismo;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ public class InfoIndexActivity extends TutorialActivity {
         addFragment(
                 new PermissionStep
                         .Builder()
-                        .setPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                        .setPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, String.valueOf(PackageManager.PERMISSION_GRANTED)})
                         .setTitle(getString(R.string.permission_title)).setContent(getString(R.string.permission_detail))
                         .setBackgroundColor(Color.parseColor("#FF0957"))
                         .setDrawable(R.drawable.ss_1)

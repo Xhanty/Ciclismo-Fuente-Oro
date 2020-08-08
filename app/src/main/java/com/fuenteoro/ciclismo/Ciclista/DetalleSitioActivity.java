@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.fuenteoro.ciclismo.Models.GaleriaSitios;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Sitios.RecorridoSitioActivity;
 import com.fuenteoro.ciclismo.Utils.RecyclerGaleria;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +44,7 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
     RatingBar calificacion_detalle_sitio;
     Button ir_sitio;
 
-    String nombre;
+    String nombre, detalle;
     Double latitud_sitio;
     Double longitud_sitio;
 
@@ -85,7 +86,7 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     nombre = dataSnapshot.child("nombre").getValue().toString();
-                    String detalle = dataSnapshot.child("detalle").getValue().toString();
+                    detalle = dataSnapshot.child("detalle").getValue().toString();
                     latitud_sitio = (Double) dataSnapshot.child("latitud_sitio").getValue();
                     longitud_sitio = (Double) dataSnapshot.child("longitud_sitio").getValue();
                     String imagen = dataSnapshot.child("imagen").getValue().toString();
@@ -128,7 +129,13 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
                 public void onClick(DialogInterface dialog, int which) {
                     if (opciones[which] == opciones[0]){
                         //CON CONEXIÓN
-
+                        Intent intent = new Intent(DetalleSitioActivity.this, RecorridoSitioActivity.class);
+                        intent.putExtra("ID", ID);
+                        intent.putExtra("Nombre", nombre);
+                        intent.putExtra("Descripcion", detalle);
+                        intent.putExtra("Latitud", latitud_sitio);
+                        intent.putExtra("Longitud", longitud_sitio);
+                        startActivity(intent);
                     } else {
                         //SIN CONEXIÓN
                         try {
