@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="248dp"
+        android:layout_height="222dp"
         android:orientation="vertical"
         android:background="@color/colorAccent">
 
@@ -31,17 +31,6 @@
             android:textColor="#fff"
             android:fontFamily="@font/bungee"
             android:text="Nombre Sitio"/>
-
-        <TextView
-            android:layout_marginTop="-13dp"
-            android:fontFamily="@font/baloo"
-            android:layout_marginStart="20dp"
-            android:id="@+id/detalle_sitio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:textSize="16dp"
-            android:text="Detalle Sitio"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/calificacion_sitio"

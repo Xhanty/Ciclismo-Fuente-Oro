@@ -3,31 +3,40 @@ package com.fuenteoro.ciclismo.Ciclista;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.fuenteoro.ciclismo.Models.GaleriaSitios;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Sitios.RecorridoSitioActivity;
+import com.fuenteoro.ciclismo.Utils.Localizacion;
 import com.fuenteoro.ciclismo.Utils.RecyclerGaleria;
+import com.google.android.gms.location.LocationListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,6 +56,7 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
     String nombre, detalle;
     Double latitud_sitio;
     Double longitud_sitio;
+    Double LatitudL, LongitudL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +78,23 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
         ir_sitio = findViewById(R.id.btn_ir_sitio);
         ir_sitio.setOnClickListener(this);
 
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
+        //locationStart();
     }
 
     @Override
     protected void onStart() {
+        Detalle_sitio_map fragment = new Detalle_sitio_map();
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", ID);
+        fragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_detallesitio, fragment, null);
+        fragmentTransaction.commit();
+
+
         adapter = new RecyclerGaleria(listGaleria, new RecyclerGaleria.OnclickRecycler() {
             @Override
             public void OnClicItemRecycler(GaleriaSitios galeriasitios) {
@@ -128,26 +149,28 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (opciones[which] == opciones[0]){
-                        //CON CONEXIÓN
                         Intent intent = new Intent(DetalleSitioActivity.this, RecorridoSitioActivity.class);
                         intent.putExtra("ID", ID);
                         intent.putExtra("Nombre", nombre);
-                        intent.putExtra("Descripcion", detalle);
                         intent.putExtra("Latitud", latitud_sitio);
                         intent.putExtra("Longitud", longitud_sitio);
                         startActivity(intent);
+                        finish();
+                        //CON CONEXIÓN
                     } else {
                         //SIN CONEXIÓN
                         try {
 
                             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                    Uri.parse("geo:"+latitud_sitio+","+longitud_sitio+"?z=16&q="+latitud_sitio+","+longitud_sitio+"("+nombre+")"));
+                            Uri.parse("geo:"+latitud_sitio+","+longitud_sitio+"?z=16&q="+latitud_sitio+","+longitud_sitio+"("+nombre+")"));
                             intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                             startActivity(intent);
+                            finish();
 
                         } catch (Exception e) {
                             Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
                             startActivity( new Intent(Intent.ACTION_VIEW, uri));
+                            finish();
                         }
                     }
                 }
@@ -162,6 +185,44 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+        }
+    }
+
+
+    private void locationStart() {
+        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Localizacion Local = new Localizacion();
+        Local.setMainActivity(this);
+        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!gpsEnabled) {
+            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(settingsIntent);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            return;
+        }
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (android.location.LocationListener) Local);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) Local);
+    }
+
+    /* Aqui empieza la Clase Localizacion */
+    public class Localizacion implements LocationListener {
+
+        DetalleSitioActivity mainActivity;
+        public DetalleSitioActivity getMainActivity() {
+            return mainActivity;
+        }
+        public void setMainActivity(DetalleSitioActivity mainActivity) {
+            this.mainActivity = mainActivity;
+        }
+
+        @Override
+        public void onLocationChanged(Location loc) {
+            // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
+            // debido a la deteccion de un cambio de ubicacion
+            LatitudL = loc.getLatitude();
+            LongitudL = loc.getLongitude();
         }
     }
 }

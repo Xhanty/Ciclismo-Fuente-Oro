@@ -1,9 +1,10 @@
 package com.fuenteoro.ciclismo.Sitios;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import com.fuenteoro.ciclismo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,13 +13,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Objects;
-
 public class RecorridoSitioActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private String Nombre, ID, Descripcion;
-    private Double Latitud, Longitud;
+
+    GoogleMap mMap;
+    String Nombre, ID;
+    Double Latitud, Longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,6 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
 
         ID = getIntent().getStringExtra("ID");
         Nombre = getIntent().getStringExtra("Nombre");
-        Descripcion = getIntent().getStringExtra("Descripcion");
         Latitud = getIntent().getDoubleExtra("Latitud", 1);
         Longitud = getIntent().getDoubleExtra("Longitud", 1);
 
@@ -42,9 +41,17 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        //mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(Latitud, Longitud);
         mMap.addMarker(new MarkerOptions().position(sydney).title(Nombre));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18));
+
     }
 }

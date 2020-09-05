@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import java.util.Objects;
 public class SitioMapFragment extends Fragment {
     GoogleMap mMap;
     ImageButton lista;
+    String ID;
     DatabaseReference mDatabase;
     private ArrayList<Marker> tmpRealtimeMarker = new ArrayList<>();
     private ArrayList<Marker> realtimeMarkers = new ArrayList<>();
@@ -62,6 +64,7 @@ public class SitioMapFragment extends Fragment {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Sitios sitios = snapshot.getValue(Sitios.class);
 
+                                ID = snapshot.getKey();
                                 String nombre = sitios.getNombre();
                                 Double latitud_origen = sitios.getLatitud_sitio();
                                 Double longitud_origen = sitios.getLongitud_sitio();
@@ -69,15 +72,14 @@ public class SitioMapFragment extends Fragment {
                                 MarkerOptions markerOptions = new MarkerOptions();
                                 markerOptions.position(new LatLng(latitud_origen, longitud_origen))
                                         .title(nombre)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.hermosillo));
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.sitio));
                                 tmpRealtimeMarker.add(mMap.addMarker(markerOptions));
-
                             }
                             realtimeMarkers.clear();
                             realtimeMarkers.addAll(tmpRealtimeMarker);
 
                         } else {
-                            Toast.makeText(getContext(), "Hasta el momento no hay sitios", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(), "Hasta el momento no hay sitios", Toast.LENGTH_SHORT).show();
                         }
                     }
 

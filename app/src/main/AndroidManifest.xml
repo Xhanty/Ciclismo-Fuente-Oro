@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fuenteoro.ciclismo">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the "MyLocation" functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -38,10 +33,12 @@
 
         <activity
             android:name=".Rutas.RecoridoRutaActivity"
-            android:label="@string/title_activity_reccorido_ruta"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Sitios.RecorridoSitioActivity"
-            android:label="@string/title_activity_recorrido_sitio" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Ciclista.DetalleSitioActivity"
             android:screenOrientation="portrait"

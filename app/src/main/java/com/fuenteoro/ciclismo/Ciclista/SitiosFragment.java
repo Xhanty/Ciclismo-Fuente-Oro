@@ -109,7 +109,6 @@ public class SitiosFragment extends Fragment {
                 @Override
                 protected void onBindViewHolder(SitiosViewHolder sitiosViewHolder, final int i, Sitios sitios) {
                     sitiosViewHolder.setNombre(sitios.getNombre());
-                    sitiosViewHolder.setDetalle(sitios.getDetalle());
                     sitiosViewHolder.setImage(getContext(), sitios.getImagen());
                     sitiosViewHolder.setCalificacion(sitios.getCalificacion());
                     progressDialog.dismiss();
@@ -156,11 +155,6 @@ public class SitiosFragment extends Fragment {
         public void setNombre(String nombre){
             TextView nombre_post = (TextView)mView.findViewById(R.id.nombre_sitio);
             nombre_post.setText(nombre);
-        }
-
-        public void setDetalle(String detalle){
-            TextView detalle_post = (TextView)mView.findViewById(R.id.detalle_sitio);
-            detalle_post.setText(detalle);
         }
 
         public void setImage(Context ctx, String image){
