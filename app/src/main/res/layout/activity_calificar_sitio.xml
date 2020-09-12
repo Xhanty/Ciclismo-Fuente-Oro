@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="12dp"
+    android:layout_margin="8dp"
+    android:elevation="90dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="222dp"
+        android:orientation="vertical"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/img_sitio_calificacion"/>
+
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-10dp"
+            android:id="@+id/nombre_sitio_calificacion"
+            android:layout_width="match_parent"
+            android:textSize="18dp"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:fontFamily="@font/bungee"
+            android:text="Nombre Sitio"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/calificacion_sitio_calificacion"
+            android:theme="@style/RatingBar.Yellow"
+            android:progressBackgroundTint="@color/colorPrimary"
+            android:layout_gravity="end"
+            android:isIndicator="true"
+            android:layout_marginTop="-89dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

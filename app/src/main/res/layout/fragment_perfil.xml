@@ -201,5 +201,17 @@
             android:fontFamily="@font/bungee"
             android:text="Cerrar Sesión"
             android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/btn_guardardatos"
+                android:layout_width="match_parent"
+                android:visibility="invisible"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/bungee"
+                android:text="Actualizar datos"
+                android:textColor="#fff" />
         </LinearLayout>
 </ScrollView>

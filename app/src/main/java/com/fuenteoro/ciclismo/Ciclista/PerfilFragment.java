@@ -28,15 +28,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PerfilFragment extends Fragment implements View.OnClickListener {
 
-    Button cerrar_sesion;
+    Button cerrar_sesion, guardar;
     //Progress Dialog
     ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     TextView nombre;
     TextInputEditText fullname, email;
     private DatabaseReference mDatabase;
+    String id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,15 +82,26 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         }
 
         cerrar_sesion = view.findViewById(R.id.btn_cerrarsesion);
+        guardar = view.findViewById(R.id.btn_guardardatos);
 
         cerrar_sesion.setOnClickListener(this);
+        guardar.setOnClickListener(this);
+        cerrar_sesion.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                fullname.setEnabled(true);
+                cerrar_sesion.setVisibility(View.INVISIBLE);
+                guardar.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
 
         return view;
     }
 
     private void UserInfo(){
         try {
-            String id = mAuth.getCurrentUser().getUid();
+            id = mAuth.getCurrentUser().getUid();
             mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,7 +132,6 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if(v == cerrar_sesion){
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
             builder.setTitle("Alerta");
             builder.setMessage("¿Deseas cerrar la sesión?");
 
@@ -140,6 +154,15 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
             builder.create();
             builder.show();
+        } else if (v == guardar){
+                Map<String, Object> personMap = new HashMap<>();
+                personMap.put("nombres", fullname.getText().toString().trim());
+                mDatabase.child("Usuarios").child(id).updateChildren(personMap);
+
+                fullname.setEnabled(false);
+                cerrar_sesion.setVisibility(View.VISIBLE);
+                guardar.setVisibility(View.INVISIBLE);
+                Toast.makeText(getContext(), "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
         }
     }
 }
