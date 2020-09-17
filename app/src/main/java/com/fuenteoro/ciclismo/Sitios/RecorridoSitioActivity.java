@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -83,6 +84,9 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
         LatLng destino = new LatLng(LatitudD, LongitudD);
 
         if(lat == LatitudD){
+            Intent intent = new Intent(this, CalificarSitioActivity.class);
+            startActivity(intent);
+            finish();
             Toast.makeText(this, "Ya llegaste", Toast.LENGTH_SHORT).show();
         } else {
             CameraUpdate miUbi = CameraUpdateFactory.newLatLngZoom(coordenada, 16);

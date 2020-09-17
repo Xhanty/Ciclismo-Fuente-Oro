@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.fuenteoro.ciclismo.Admin.MenuAdminActivity;
 import com.fuenteoro.ciclismo.MenuActivity;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.ResetPasswordActivity;
@@ -24,6 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
@@ -39,6 +45,7 @@ public class Fragment_Login extends Fragment implements View.OnClickListener{
     //VARIABLES QUE VAMOS A REGISTRAR
     private String correo = "";
     private String contrasena = "";
+    String id, perfil = "";
 
 
     private TextInputEditText email, clave;
@@ -46,6 +53,7 @@ public class Fragment_Login extends Fragment implements View.OnClickListener{
 
     //Login en Firebase
     FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +74,7 @@ public class Fragment_Login extends Fragment implements View.OnClickListener{
         demo.setOnClickListener(this);
         login.setOnClickListener(this);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         return view;
     }
 
@@ -152,7 +161,29 @@ public class Fragment_Login extends Fragment implements View.OnClickListener{
                         clave.setText("");
                         Toast.makeText(getActivity(), "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
-                        startActivity(new Intent(getContext(), MenuActivity.class));
+
+
+                        id = mAuth.getCurrentUser().getUid();
+                        mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    perfil = dataSnapshot.child("perfil").getValue().toString();
+                                }
+
+                                if(perfil.equals("Administrador")){
+                                    startActivity(new Intent(getContext(), MenuAdminActivity.class));
+
+                                } else {
+                                    startActivity(new Intent(getContext(), MenuActivity.class));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                     } else {
                         Toast.makeText(getActivity(), "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show();
@@ -169,9 +200,28 @@ public class Fragment_Login extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-
         if(mAuth.getCurrentUser() != null){
-            startActivity(new Intent(getContext(), MenuActivity.class));
+            id = mAuth.getCurrentUser().getUid();
+            mDatabase.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        perfil = dataSnapshot.child("perfil").getValue().toString();
+                    }
+
+                    if(perfil.equals("Administrador")){
+                        startActivity(new Intent(getContext(), MenuAdminActivity.class));
+
+                    } else {
+                        startActivity(new Intent(getContext(), MenuActivity.class));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 }

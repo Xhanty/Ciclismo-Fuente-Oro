@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="12dp"
+    android:layout_margin="8dp"
+    android:elevation="90dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:background="#fff"
+            android:src="@drawable/ic_menu_perfil"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/nombre_usuario_admin"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:fontFamily="@font/baloo"
+            android:text="Santiago Smith Delgado Henao"/>
+
+            <TextView
+                android:layout_marginStart="8dp"
+                android:id="@+id/tel_usuario_admin"
+                android:layout_width="match_parent"
+                android:textSize="17dp"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:fontFamily="@font/baloo"
+                android:text="3164693321"/>
+
+            <TextView
+                android:layout_marginStart="8dp"
+                android:id="@+id/perfil_usuario_admin"
+                android:layout_width="match_parent"
+                android:textSize="17dp"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:fontFamily="@font/baloo"
+                android:text="Ciclista"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

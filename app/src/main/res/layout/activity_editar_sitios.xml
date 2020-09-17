@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    tools:context=".Admin.ui.Sitios.EditarSitiosActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/imagen_sitio_admin"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:background="#000"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nombre_sitio_admin"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Nombres "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:drawableLeft="@drawable/sitio"
+                        android:textColorHint="#ccc"
+                        android:inputType="textEmailAddress"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/latitud_sitio_admin"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Latitud "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="text"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/longitud_sitio_admin"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Longitud "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="text"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalle_sitio_admin"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Detalle "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:lines="2"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_imagen_sitio_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="Seleccionar imagen"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/btn_actualizar_sitio_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/btnlogin"
+                    android:text="Actualizar sitio"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/btn_vercomentarios_sitio_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="Ver comentarios"
+                    android:textColor="@color/colorAccent"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
