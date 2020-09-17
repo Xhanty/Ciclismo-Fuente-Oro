@@ -204,7 +204,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/btn_imagen_sitio_admin"
+                    android:id="@+id/btn_imagen_ruta_admin"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="-10dp"
@@ -217,7 +217,7 @@
                     android:textSize="20dp"/>
 
                 <Button
-                    android:id="@+id/btn_actualizar_sitio_admin"
+                    android:id="@+id/btn_actualizar_ruta_admin"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
@@ -230,7 +230,7 @@
                     android:textSize="20dp"/>
 
                 <Button
-                    android:id="@+id/btn_vercomentarios_sitio_admin"
+                    android:id="@+id/btn_vercomentarios_ruta_admin"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="30dp"
