@@ -40,7 +40,6 @@ public class UsuariosFragment extends Fragment {
 
     FirebaseRecyclerOptions<Usuarios> options;
     FirebaseRecyclerAdapter<Usuarios, UsuariosAdminViewHolder> adapter;
-    String id = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,7 +84,6 @@ public class UsuariosFragment extends Fragment {
                     final String email = sitios.getEmail();
                     final Long tel = sitios.getTelefono();
                     progressDialog.dismiss();
-                    id = getRef(i).getKey();
 
                     sitiosViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
@@ -98,7 +96,7 @@ public class UsuariosFragment extends Fragment {
                             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mDatabase.child(id).setValue(null);
+                                    mDatabase.child(getRef(i).getKey()).setValue(null);
                                     Toast.makeText(getContext(), "Eliminado correctamente", Toast.LENGTH_SHORT).show();
                                 }
                             });

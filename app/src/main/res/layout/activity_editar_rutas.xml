@@ -39,7 +39,7 @@
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/nombre_sitio_admin"
+                        android:id="@+id/nombre_ruta_admin"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:hint="  Nombres "
@@ -202,6 +202,12 @@
 
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/imagen_rutaeditar_admin"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/btn_imagen_ruta_admin"

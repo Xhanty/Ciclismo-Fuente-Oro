@@ -24,13 +24,13 @@
                 android:id="@+id/imagen_sitio_admin"
                 android:layout_width="250dp"
                 android:layout_height="150dp"
-                android:background="#000"/>
+                android:background="#fff"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -103,19 +103,25 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/detalle_sitio_admin"
                         android:layout_width="match_parent"
-                        android:layout_height="66dp"
+                        android:layout_height="wrap_content"
                         android:hint="  Detalle "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
-                        android:lines="2"
+                        android:lines="4"
                         android:drawableStart="@drawable/sitio"
                         android:inputType="textMultiLine"/>
 
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/imagen_sitioeditar_admin"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/btn_imagen_sitio_admin"

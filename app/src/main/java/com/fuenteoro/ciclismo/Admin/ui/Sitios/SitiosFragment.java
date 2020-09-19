@@ -43,7 +43,6 @@ public class SitiosFragment extends Fragment {
 
     FirebaseRecyclerOptions<Sitios> options;
     FirebaseRecyclerAdapter<Sitios, SitiosAdminViewHolder> adapter;
-    String id = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class SitiosFragment extends Fragment {
                     sitiosViewHolder.setImage(getContext(), sitios.getImagen());
                     sitiosViewHolder.setCalificacion(sitios.getCalificacion());
                     progressDialog.dismiss();
-                    id = getRef(i).getKey();
 
                     sitiosViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
@@ -97,7 +95,7 @@ public class SitiosFragment extends Fragment {
                             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mDatabase.child(id).setValue(null);
+                                    mDatabase.child(getRef(i).getKey()).setValue(null);
                                     Toast.makeText(getContext(), "Eliminado correctamente", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -113,6 +111,15 @@ public class SitiosFragment extends Fragment {
                             builder.show();
 
                             return false;
+                        }
+                    });
+
+                    sitiosViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getContext(), EditarSitiosActivity.class);
+                            intent.putExtra("ID", getRef(i).getKey());
+                            startActivity(intent);
                         }
                     });
                 }

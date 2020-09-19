@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -20,9 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.fuenteoro.ciclismo.Admin.ui.Sitios.EditarSitiosActivity;
 import com.fuenteoro.ciclismo.Ciclista.InternetFragment;
 import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
@@ -40,7 +39,6 @@ public class RutasFragment extends Fragment {
     FirebaseRecyclerOptions<Rutas> options;
     FirebaseRecyclerAdapter<Rutas, RutasAdminViewHolder> adapter;
     SearchView searchView;
-    String id = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -119,7 +117,6 @@ public class RutasFragment extends Fragment {
                 rutasViewHolder.setImage(getContext(), rutas.getImagen());
                 rutasViewHolder.setCalificacion(rutas.getCalificacion());
                 progressDialog.dismiss();
-                id = getRef(i).getKey();
 
 
                 rutasViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -133,7 +130,7 @@ public class RutasFragment extends Fragment {
                         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDatabase.child(id).setValue(null);
+                                mDatabase.child(getRef(i).getKey()).setValue(null);
                                 Toast.makeText(getContext(), "Eliminada correctamente", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -148,6 +145,15 @@ public class RutasFragment extends Fragment {
                         builder.create();
                         builder.show();
                         return false;
+                    }
+                });
+
+                rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), EditarRutasActivity.class);
+                        intent.putExtra("ID", getRef(i).getKey());
+                        startActivity(intent);
                     }
                 });
             }
@@ -179,7 +185,6 @@ public class RutasFragment extends Fragment {
                     rutasViewHolder.setImage(getContext(), rutas.getImagen());
                     rutasViewHolder.setCalificacion(rutas.getCalificacion());
                     progressDialog.dismiss();
-                    id = getRef(i).getKey();
 
                     rutasViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
@@ -192,7 +197,7 @@ public class RutasFragment extends Fragment {
                             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mDatabase.child(id).setValue(null);
+                                    mDatabase.child(getRef(i).getKey()).setValue(null);
                                     Toast.makeText(getContext(), "Eliminada correctamente", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -207,6 +212,15 @@ public class RutasFragment extends Fragment {
                             builder.create();
                             builder.show();
                             return false;
+                        }
+                    });
+
+                    rutasViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                              Intent intent = new Intent(getContext(), EditarRutasActivity.class);
+                              intent.putExtra("ID", getRef(i).getKey());
+                              startActivity(intent);
                         }
                     });
 
