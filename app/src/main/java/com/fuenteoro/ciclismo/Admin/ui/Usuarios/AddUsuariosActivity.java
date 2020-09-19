@@ -1,17 +1,14 @@
-package com.fuenteoro.ciclismo.Log_Reg;
+package com.fuenteoro.ciclismo.Admin.ui.Usuarios;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -31,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class Fragment_Register extends Fragment implements View.OnClickListener {
+public class AddUsuariosActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Validaciones
     private static final Pattern PASSWORD_PATTERN =
@@ -52,7 +49,7 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
     //Varables de entorno
     TextInputEditText nombre, apellido;
     TextInputEditText email, telefono, clave, conficlave;
-    Button registro, demo;
+    Button registro;
 
     //VARIABLES QUE VAMOS A REGISTRAR
     private String nombres = "";
@@ -69,44 +66,24 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        telefono = (TextInputEditText) view.findViewById(R.id.tel_regis);
-        nombre = (TextInputEditText) view.findViewById(R.id.nombres_regis);
-        apellido = (TextInputEditText) view.findViewById(R.id.apellidos_regis);
-        email = (TextInputEditText) view.findViewById(R.id.correo_register);
-        clave = (TextInputEditText) view.findViewById(R.id.clave_register);
-        conficlave = (TextInputEditText) view.findViewById(R.id.claveconfir_register);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_usuarios);
+
+        telefono = (TextInputEditText) findViewById(R.id.tel_regis_admin);
+        nombre = (TextInputEditText) findViewById(R.id.nombres_regis_admin);
+        apellido = (TextInputEditText) findViewById(R.id.apellidos_regis_admin);
+        email = (TextInputEditText) findViewById(R.id.correo_register_admin);
+        clave = (TextInputEditText) findViewById(R.id.clave_register_admin);
+        conficlave = (TextInputEditText) findViewById(R.id.claveconfir_register_admin);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        demo = (Button) view.findViewById(R.id.btn_verdemo_register);
-        demo.setOnClickListener(this);
-        registro = (Button) view.findViewById(R.id.btn_register);
+        registro = (Button) findViewById(R.id.btn_register_admin);
         registro.setOnClickListener(this);
-        return view;
-    }
-
-    //VALIDACIONES
-    private boolean validateEmail(){
-        correo = email.getText().toString().trim();
-        if(correo.isEmpty()){
-            email.setError("Escribe un email");
-            return false;
-
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-            email.setError("Escribe un email válido");
-            return false;
-
-        } else {
-            email.setError(null);
-            return true;
-        }
     }
 
     //VALIDACIONES
@@ -124,6 +101,22 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
 
         } else {
             telefono.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateEmail(){
+        correo = email.getText().toString().trim();
+        if(correo.isEmpty()){
+            email.setError("Escribe un email");
+            return false;
+
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+            email.setError("Escribe un email válido");
+            return false;
+
+        } else {
+            email.setError(null);
             return true;
         }
     }
@@ -205,7 +198,6 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
         }
     }
 
-    //CUÁNDO TOCAN EL BOTON
     @Override
     public void onClick(View v) {
         if (v == registro) {
@@ -213,9 +205,9 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
                 return;
 
             }
-            if(UtilsNetwork.isOnline(getContext())){
+            if(UtilsNetwork.isOnline(this)){
                 //Abrimos el progressDialog
-                progressDialog = new ProgressDialog(getContext());
+                progressDialog = new ProgressDialog(this);
                 progressDialog.show();
 
                 //Contenido
@@ -230,21 +222,19 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
                 registrarusuario();
 
             } else {
-                Toast.makeText(getContext(), "No tienes conexión a internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No tienes conexión a internet", Toast.LENGTH_SHORT).show();
             }
 
-        } else if (v == demo){
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=tbneQDc2H3I")));
         }
     }
 
     //ACCIÓN DE REGISTRAR
     private void registrarusuario() {
         try {
-        telefo = Double.valueOf(telefono.getText().toString().trim());
-        correo = email.getText().toString().trim();
-        nombrecomple = nombre.getText().toString().trim() + " " + apellido.getText().toString().trim();
-        contrasena = clave.getText().toString().trim();
+            telefo = Double.valueOf(telefono.getText().toString().trim());
+            correo = email.getText().toString().trim();
+            nombrecomple = nombre.getText().toString().trim() + " " + apellido.getText().toString().trim();
+            contrasena = clave.getText().toString().trim();
 
 
             // Create MD5 Hash
@@ -263,46 +253,44 @@ public class Fragment_Register extends Fragment implements View.OnClickListener 
 
             resulthash = claveencri.toString().trim();
 
-        mAuth.createUserWithEmailAndPassword(correo, contrasena).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("telefono", telefo);
-                    map.put("nombres", nombrecomple);
-                    map.put("email", correo);
-                    map.put("clave", resulthash);
-                    map.put("perfil", "Ciclista");
+            mAuth.createUserWithEmailAndPassword(correo, contrasena).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("telefono", telefo);
+                        map.put("nombres", nombrecomple);
+                        map.put("email", correo);
+                        map.put("clave", resulthash);
+                        map.put("perfil", "Administrador");
 
-                    String id = mAuth.getCurrentUser().getUid();
+                        String id = mAuth.getCurrentUser().getUid();
 
-                    mDatabase.child("Usuarios").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task2) {
-                            if (task2.isSuccessful()) {
-                                //Redireccionar y limpiar los datos
-                                email.setText("");
-                                telefono.setText("");
-                                nombre.setText("");
-                                apellido.setText("");
-                                clave.setText("");
-                                conficlave.setText("");
-                                Toast.makeText(getActivity(), "Registrado correctamente", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-
-                                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                                startActivity(intent);
+                        mDatabase.child("Usuarios").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task2) {
+                                if (task2.isSuccessful()) {
+                                    //Redireccionar y limpiar los datos
+                                    email.setText("");
+                                    telefono.setText("");
+                                    nombre.setText("");
+                                    apellido.setText("");
+                                    clave.setText("");
+                                    conficlave.setText("");
+                                    Toast.makeText(AddUsuariosActivity.this, "Registrado correctamente", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    finish();
+                                }
                             }
-                        }
-                    });
-                } else {
-                    Toast.makeText(getContext(), "Este correo eléctronico ya se encuentra registrado", Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
+                        });
+                    } else {
+                        Toast.makeText(AddUsuariosActivity.this, "Este correo eléctronico ya se encuentra registrado", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
                 }
-            }
-        });
-            } catch (Exception e) {
-            Toast.makeText(getContext(), "A ocurrido un error, intenta más tarde", Toast.LENGTH_LONG).show();
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, "A ocurrido un error, intenta más tarde", Toast.LENGTH_LONG).show();
         }
     }
 }

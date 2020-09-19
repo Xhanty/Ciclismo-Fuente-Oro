@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    android:background="#fff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    tools:context=".Log_Reg.Fragment_Register">
+    tools:context=".Admin.ui.Rutas.AddRutasActivity">
 
-    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,12 +18,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/imagen_ruta_admin_add"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:background="#fff"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="50dp"
-                android:layout_marginTop="30dp">
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -30,15 +39,15 @@
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/correo_register"
+                        android:id="@+id/nombre_ruta_admin_add"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:hint="  Correo eléctronico "
+                        android:hint="  Nombres "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
-                        android:drawableLeft="@drawable/correo"
+                        android:drawableLeft="@drawable/sitio"
                         android:textColorHint="#ccc"
                         android:inputType="textEmailAddress"/>
 
@@ -50,37 +59,16 @@
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tel_regis"
+                        android:id="@+id/latitud_rutaorigen_admin_add"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:hint="  Teléfono "
+                        android:hint="  Latitud Origen "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
-                        android:drawableStart="@drawable/ic_baseline_add_ic_call_24"
-                        android:inputType="number"/>
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/nombres_regis"
-                        android:layout_width="match_parent"
-                        android:layout_height="66dp"
-                        android:hint="  Nombres "
-                        android:textColor="#000"
-                        android:fontFamily="sans-serif-medium"
-                        android:layout_marginRight="35dp"
-                        android:layout_marginLeft="35dp"
-                        android:textColorHint="#ccc"
-                        android:drawableStart="@drawable/carnet"
+                        android:drawableStart="@drawable/sitio"
                         android:inputType="text"/>
 
 
@@ -92,16 +80,16 @@
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/apellidos_regis"
+                        android:id="@+id/longitud_rutaorigen_admin_add"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:hint="  Apellidos "
+                        android:hint="  Longitud Origen "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
-                        android:drawableStart="@drawable/carnet"
+                        android:drawableStart="@drawable/sitio"
                         android:inputType="text"/>
 
 
@@ -110,22 +98,20 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:passwordToggleEnabled="true">
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/clave_register"
+                        android:id="@+id/latitud_rutadestino_admin_add"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:hint="  Contraseña "
+                        android:hint="  Latitud Destino "
                         android:textColor="#000"
-                        android:maxLength="10"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
-                        android:drawableStart="@drawable/contrasena"
-                        android:inputType="textPassword"/>
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="text"/>
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -133,89 +119,118 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:passwordToggleEnabled="true">
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/claveconfir_register"
+                        android:id="@+id/longitud_rutadestino_admin_add"
                         android:layout_width="match_parent"
                         android:layout_height="66dp"
-                        android:maxLength="10"
-                        android:hint=" Confirmar contraseña "
+                        android:hint="  Longitud Destino "
                         android:textColor="#000"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
                         android:textColorHint="#ccc"
-                        android:drawableStart="@drawable/contrasena"
-                        android:inputType="textPassword"/>
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="text"/>
 
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:errorEnabled="true">
 
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
-                        android:checked="true"
-                        android:enabled="false"/>
-
-                    <Button
-                        android:id="@+id/btn_info_register"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalle_ruta_elevacion_admin_add"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:background="@android:color/transparent"
-                        android:textAllCaps="false"
-                        android:layout_gravity="left"
-                        android:gravity="left"
+                        android:layout_height="66dp"
+                        android:hint="  Elevación "
                         android:textColor="#000"
-                        android:text="Acepto los términos y condiciones y el Aviso \nde privacidad del portal"
-                        />
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:lines="2"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="textMultiLine"/>
 
-                </LinearLayout>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalle_ruta_distancia_admin_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Distancia "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:lines="2"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalle_ruta_dificultad_admin_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:hint="  Dificultad "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:lines="2"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <Button
-                    android:id="@+id/btn_register"
+                    android:id="@+id/btn_imagen_ruta_admin_add"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="33dp"
+                    android:layout_marginTop="-10dp"
                     android:layout_marginLeft="35dp"
                     android:layout_marginRight="35dp"
-                    android:background="@drawable/btnlogin"
-                    android:text="Registrarme"
+                    android:background="@android:color/transparent"
+                    android:text="Seleccionar imagen"
                     android:textColor="@color/colorPrimaryDark"
                     android:textAllCaps="false"
                     android:textSize="20dp"/>
 
-
                 <Button
-                    android:id="@+id/btn_verdemo_register"
+                    android:id="@+id/btn_actualizar_ruta_admin_add"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="35dp"
                     android:layout_marginRight="35dp"
-                    android:background="@android:color/transparent"
-                    android:text="Ver demo"
-                    android:textColor="@color/colorAccent"
+                    android:background="@drawable/btnlogin"
+                    android:text="Guardar ruta"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAllCaps="false"
                     android:textSize="20dp"/>
 
-
             </LinearLayout>
-
-
-
-
         </LinearLayout>
-
-
     </ScrollView>
 
-</FrameLayout>
+</LinearLayout>

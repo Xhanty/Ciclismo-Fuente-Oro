@@ -24,13 +24,13 @@
                 android:id="@+id/imagen_ruta_admin"
                 android:layout_width="250dp"
                 android:layout_height="150dp"
-                android:background="#000"/>
+                android:background="#fff"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -230,7 +230,7 @@
                     android:layout_marginLeft="35dp"
                     android:layout_marginRight="35dp"
                     android:background="@drawable/btnlogin"
-                    android:text="Actualizar sitio"
+                    android:text="Actualizar ruta"
                     android:textColor="@color/colorPrimaryDark"
                     android:textAllCaps="false"
                     android:textSize="20dp"/>

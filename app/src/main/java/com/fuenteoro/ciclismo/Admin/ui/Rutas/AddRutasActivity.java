@@ -1,4 +1,4 @@
-package com.fuenteoro.ciclismo.Admin.ui.Sitios;
+package com.fuenteoro.ciclismo.Admin.ui.Rutas;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,11 +20,8 @@ import com.fuenteoro.ciclismo.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,18 +38,14 @@ import java.util.Objects;
 
 import id.zelory.compressor.Compressor;
 
-public class EditarSitiosActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddRutasActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseReference mDatabase;
-    EditText nombre, latitud, longitud, detalle;
-    ImageView imagen, imgeditar;
-    String ID;
+    EditText nombre, latitudorigen, longitudorigen, latituddestino, longituddestino;
+    EditText elevacion, distancia, dificultad;
+    ImageView imagen;
 
-    String txtnombre, txtdetalle, txtimagen;
-    Double txtlatitud;
-    Double txtlongitud;
-
-    Button abrirgaleria, actualizar, comentarios;
+    Button abrirgaleria, actualizar;
 
     StorageReference storageReference;
     ProgressDialog cargando;
@@ -60,75 +53,39 @@ public class EditarSitiosActivity extends AppCompatActivity implements View.OnCl
     String aleatorio = "";
     byte [] thumb_byte;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_sitios);
+        setContentView(R.layout.activity_add_rutas);
 
-        ID = getIntent().getStringExtra("ID");
-        imagen = findViewById(R.id.imagen_sitio_admin);
-        nombre = findViewById(R.id.nombre_sitio_admin);
-        latitud = findViewById(R.id.latitud_sitio_admin);
-        longitud = findViewById(R.id.longitud_sitio_admin);
-        detalle = findViewById(R.id.detalle_sitio_admin);
+        imagen = findViewById(R.id.imagen_ruta_admin_add);
+        nombre = findViewById(R.id.nombre_ruta_admin_add);
+        latitudorigen = findViewById(R.id.latitud_rutaorigen_admin_add);
+        longitudorigen = findViewById(R.id.longitud_rutaorigen_admin_add);
+        latituddestino = findViewById(R.id.latitud_rutadestino_admin_add);
+        longituddestino = findViewById(R.id.longitud_rutadestino_admin_add);
+        elevacion = findViewById(R.id.detalle_ruta_elevacion_admin_add);
+        distancia = findViewById(R.id.detalle_ruta_distancia_admin_add);
+        dificultad = findViewById(R.id.detalle_ruta_dificultad_admin_add);
 
-        abrirgaleria = findViewById(R.id.btn_imagen_sitio_admin);
-        actualizar = findViewById(R.id.btn_actualizar_sitio_admin);
-        comentarios = findViewById(R.id.btn_vercomentarios_sitio_admin);
+        abrirgaleria = findViewById(R.id.btn_imagen_ruta_admin_add);
+        actualizar = findViewById(R.id.btn_actualizar_ruta_admin_add);
 
-        imgeditar = findViewById(R.id.imagen_sitioeditar_admin);
         abrirgaleria.setOnClickListener(this);
         actualizar.setOnClickListener(this);
-        comentarios.setOnClickListener(this);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios").child("ubicaciones");
-        storageReference = FirebaseStorage.getInstance().getReference().child("Sitios").child("ubicaciones");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas").child("ubicaciones");
+        storageReference = FirebaseStorage.getInstance().getReference().child("Rutas").child("ubicaciones");
         cargando = new ProgressDialog(this);
-    }
-
-    @Override
-    protected void onStart() {
-        mDatabase.child(ID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    txtnombre = dataSnapshot.child("nombre").getValue().toString();
-                    txtdetalle = dataSnapshot.child("detalle").getValue().toString();
-                    txtlatitud = (Double) dataSnapshot.child("latitud_sitio").getValue();
-                    txtlongitud = (Double) dataSnapshot.child("longitud_sitio").getValue();
-                    txtimagen = dataSnapshot.child("imagen").getValue().toString();
-
-                    nombre.setText(txtnombre);
-                    latitud.setText(String.valueOf(txtlatitud));
-                    longitud.setText(String.valueOf(txtlongitud));
-                    detalle.setText(txtdetalle);
-                    Picasso.with(getApplicationContext()).load(txtimagen).into(imagen);
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
-            }
-        });
-        super.onStart();
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
     }
 
     @Override
     public void onClick(View v) {
         if (v == abrirgaleria){
-            CropImage.startPickImageActivity(EditarSitiosActivity.this);
+            CropImage.startPickImageActivity(AddRutasActivity.this);
 
         } else if (v == actualizar){
-            cargando.setTitle("Actualizando datos");
+            cargando.setTitle("Guardando datos");
             cargando.setMessage("Espera por favor...");
             cargando.show();
 
@@ -147,31 +104,27 @@ public class EditarSitiosActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         Uri downloaduri = task.getResult();
-                        Map<String, Object> sitioMap = new HashMap<>();
-                        sitioMap.put("nombre", nombre.getText().toString().trim());
-                        sitioMap.put("latitud_sitio", Double.valueOf(latitud.getText().toString().trim()));
-                        sitioMap.put("longitud_sitio", Double.valueOf(longitud.getText().toString().trim()));
-                        sitioMap.put("detalle", detalle.getText().toString().trim());
-                        sitioMap.put("imagen", downloaduri.toString().trim());
-                        mDatabase.child(ID).updateChildren(sitioMap);
-                        imgeditar.setImageResource(0);
+                        Map<String, Object> rutaMap = new HashMap<>();
+                        rutaMap.put("nombre", nombre.getText().toString().trim());
+                        rutaMap.put("distancia", distancia.getText().toString().trim());
+                        rutaMap.put("dificultad", dificultad.getText().toString().trim());
+                        rutaMap.put("elevacion", elevacion.getText().toString().trim());
+                        rutaMap.put("imagen", downloaduri.toString());
+                        rutaMap.put("latitud_origen", Double.valueOf(latitudorigen.getText().toString().trim()));
+                        rutaMap.put("longitud_origen", Double.valueOf(longitudorigen.getText().toString().trim()));
+                        rutaMap.put("latitud_destino", Double.valueOf(latituddestino.getText().toString().trim()));
+                        rutaMap.put("longitud_destino", Double.valueOf(longituddestino.getText().toString().trim()));
+                        mDatabase.push().setValue(rutaMap);
                         cargando.dismiss();
-                        Toast.makeText(EditarSitiosActivity.this, "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRutasActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
             } else {
-                Map<String, Object> sitioMap = new HashMap<>();
-                sitioMap.put("nombre", nombre.getText().toString().trim());
-                sitioMap.put("latitud_sitio", Double.valueOf(latitud.getText().toString().trim()));
-                sitioMap.put("longitud_sitio", Double.valueOf(longitud.getText().toString().trim()));
-                sitioMap.put("detalle", detalle.getText().toString().trim());
-                mDatabase.child(ID).updateChildren(sitioMap);
-                cargando.dismiss();
-                Toast.makeText(EditarSitiosActivity.this, "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRutasActivity.this, "Selecciona una imagen", Toast.LENGTH_SHORT).show();
             }
-        } else if (v == comentarios){
-            Toast.makeText(this, "Comentario!", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -186,7 +139,7 @@ public class EditarSitiosActivity extends AppCompatActivity implements View.OnCl
             CropImage.activity(imageuri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setRequestedSize(640,480)
-                    .setAspectRatio(2, 1).start(EditarSitiosActivity.this);
+                    .setAspectRatio(2, 1).start(AddRutasActivity.this);
         }
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
@@ -195,7 +148,7 @@ public class EditarSitiosActivity extends AppCompatActivity implements View.OnCl
             if(resultCode == RESULT_OK){
                 Uri resulturi = result.getUri();
                 File url = new File(resulturi.getPath());
-                Picasso.with(this).load(url).into(imgeditar);
+                Picasso.with(this).load(url).into(imagen);
                 //COMPRIMIENDO IMAGEN
                 try{
                     thumb_bitmap = new Compressor(this)

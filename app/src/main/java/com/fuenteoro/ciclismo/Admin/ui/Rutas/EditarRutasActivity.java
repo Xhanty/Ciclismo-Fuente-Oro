@@ -236,12 +236,14 @@ public class EditarRutasActivity extends AppCompatActivity implements View.OnCli
                 thumb_byte = byteArrayOutputStream.toByteArray();
 
                 //FIN DEL COMPRESOR
-                int p = (int) (Math.random() + 24 + 1); int s = (int) (Math.random() + 24 + 1);
-                int t = (int) (Math.random() + 24 + 1); int c = (int) (Math.random() + 24 + 1);
-                int numero1 = (int) (Math.random() + 1012 + 2111);
-                int numero2 = (int) (Math.random() + 1012 + 2111);
+                int p = (int) Math.floor(Math.random()*(23+1+1)+(1));
+                int s = (int) Math.floor(Math.random()*(23+1+1)+(1));
+                int t = (int) Math.floor(Math.random()*(23+1+1)+(1));
+                int c = (int) Math.floor(Math.random()*(23+1+1)+(1));
+                int numero1 = (int) Math.floor(Math.random()*(2111+1012+1)+(1012));
+                int numero2 = (int) Math.floor(Math.random()*(2111+1012+1)+(1012));
 
-                String [] elementos = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "k",
+                String [] elementos = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
                         "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
 
                 aleatorio = elementos[p] + elementos[s] +
