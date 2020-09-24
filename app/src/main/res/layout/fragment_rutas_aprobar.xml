@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Admin.ui.Home.RutasFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+       android:id="@+id/sitios_aprobar_admin"
+       android:layout_width="match_parent"
+       android:layout_marginTop="5dp"
+       android:layout_height="wrap_content"
+       android:background="@drawable/btnlogin"
+       android:text="Sitios"
+       android:textColor="@color/colorPrimaryDark"
+       android:textAllCaps="false"
+       android:textSize="20dp"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"/>
+
+</LinearLayout>

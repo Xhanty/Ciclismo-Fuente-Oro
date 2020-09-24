@@ -3,6 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/sitios_pdf"
+        android:orderInCategory="100"
+        android:title="Sitios"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/rutas_pdf"
+        android:orderInCategory="100"
+        android:title="Rutas"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/usuarios_pdf"
+        android:orderInCategory="100"
+        android:title="Usuarios"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

@@ -8,24 +8,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.fuenteoro.ciclismo.Ciclista.DetalleSitioActivity;
 import com.fuenteoro.ciclismo.Ciclista.InternetFragment;
-import com.fuenteoro.ciclismo.Ciclista.SitioMapFragment;
 import com.fuenteoro.ciclismo.Models.Sitios;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
@@ -54,7 +49,6 @@ public class SitiosFragment extends Fragment {
         mRutasList = (RecyclerView) view.findViewById(R.id.recy_sitios_admin);
         mRutasList.setHasFixedSize(true);
         mRutasList.setLayoutManager(new LinearLayoutManager(getContext()));
-
         return view;
     }
 

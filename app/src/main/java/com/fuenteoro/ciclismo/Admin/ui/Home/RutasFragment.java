@@ -1,30 +1,32 @@
 package com.fuenteoro.ciclismo.Admin.ui.Home;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.fuenteoro.ciclismo.R;
 
-public class HomeFragment extends Fragment {
+public class RutasFragment extends Fragment {
 
-    Button rutas;
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+    Button sitios;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_rutas_aprobar, container, false);
 
-        rutas = view.findViewById(R.id.rutas_aprobar_admin);
+        sitios = view.findViewById(R.id.sitios_aprobar_admin);
 
-        rutas.setOnClickListener(new View.OnClickListener() {
+        sitios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment nuevoFragmento = new RutasFragment();
+                Fragment nuevoFragmento = new HomeFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.viewPagerAprobarAdminS, nuevoFragmento);
                 transaction.addToBackStack(null);
