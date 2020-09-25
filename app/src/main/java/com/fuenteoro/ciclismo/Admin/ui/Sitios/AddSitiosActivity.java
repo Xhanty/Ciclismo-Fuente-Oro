@@ -16,6 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.fuenteoro.ciclismo.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +32,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -161,6 +168,7 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
                         sitioMap.put("imagen", downloaduri.toString().trim());
                         mDatabase.push().setValue(sitioMap);
                         cargando.dismiss();
+                        mandarnotificacion();
                         Toast.makeText(AddSitiosActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -169,6 +177,34 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
             } else {
                 Toast.makeText(AddSitiosActivity.this, "Selecciona una imagen!", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void mandarnotificacion() {
+        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
+        JSONObject json = new JSONObject();
+        try{
+            json.put("to", "/topics/"+"enviaratodos");
+            JSONObject notificacion = new JSONObject();
+            notificacion.put("titulo", "Nuevo sitio disponible");
+            notificacion.put("detalle", "Que esperas para recorrer Fuente de oro con nosotros!");
+
+            json.put("data", notificacion);
+
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, json, null, null){
+                @Override
+                public Map<String, String> getHeaders(){
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAULSQiXY:APA91bGSHTj9v0aD4aRvpcm-OtiEnYmzlDJwqJaIpwD5g_zrhCIlTAWC1mvHCVp2jxwUMr-yt-TAQrgaZDHfILf49Vp_Kfu7TS-goETbKzdB6Qfcqe8PDFVxqngG_HaYCmOZvshoUrg-");
+                    return header;
+                }
+            };
+            myrequest.add(request);
+
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 }

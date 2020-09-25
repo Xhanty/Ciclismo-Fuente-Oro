@@ -3,7 +3,6 @@ package com.fuenteoro.ciclismo.Admin.ui.Rutas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,18 +15,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.fuenteoro.ciclismo.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -116,6 +124,7 @@ public class AddRutasActivity extends AppCompatActivity implements View.OnClickL
                         rutaMap.put("longitud_destino", Double.valueOf(longituddestino.getText().toString().trim()));
                         mDatabase.push().setValue(rutaMap);
                         cargando.dismiss();
+                        mandarnotificacion();
                         Toast.makeText(AddRutasActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -125,6 +134,34 @@ public class AddRutasActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(AddRutasActivity.this, "Selecciona una imagen", Toast.LENGTH_SHORT).show();
             }
 
+        }
+    }
+
+    private void mandarnotificacion() {
+        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
+        JSONObject json = new JSONObject();
+        try{
+            json.put("to", "/topics/"+"enviaratodos");
+            JSONObject notificacion = new JSONObject();
+            notificacion.put("titulo", "Nueva ruta disponible");
+            notificacion.put("detalle", "Que esperas para recorrer Fuente de oro con nosotros!");
+
+            json.put("data", notificacion);
+
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, json, null, null){
+                @Override
+                public Map<String, String> getHeaders(){
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAULSQiXY:APA91bGSHTj9v0aD4aRvpcm-OtiEnYmzlDJwqJaIpwD5g_zrhCIlTAWC1mvHCVp2jxwUMr-yt-TAQrgaZDHfILf49Vp_Kfu7TS-goETbKzdB6Qfcqe8PDFVxqngG_HaYCmOZvshoUrg-");
+                    return header;
+                }
+            };
+            myrequest.add(request);
+
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 

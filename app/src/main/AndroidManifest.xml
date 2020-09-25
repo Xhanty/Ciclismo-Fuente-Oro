@@ -14,9 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-feature android:name="android.hardware.location.gps" />
-
     <dist:module dist:instant="true" />
 
     <application
@@ -28,6 +26,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+
+        <service android:name=".Admin.Fcm" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
