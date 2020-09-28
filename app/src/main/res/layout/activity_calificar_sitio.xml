@@ -1,9 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout android:orientation="vertical"
+    android:background="#fff"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/imagen_sitio_ciclista_coment"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:background="#fff"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <Spinner
+                        android:id="@+id/califica_sitio_ciclis_coment"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/comentario_sitio_ciclista_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="  Comentario "
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:textColorHint="#ccc"
+                        android:lines="4"
+                        android:drawableStart="@drawable/sitio"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_imagen_sitio_ciclista_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="Seleccionar imagen"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/btn_sitio_ciclis_coment"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/btnlogin"
+                    android:text="Guardar calificación"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/btn_sitio_ciclis_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/btnlogin"
+                    android:text="Proponer sitio nuevo"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

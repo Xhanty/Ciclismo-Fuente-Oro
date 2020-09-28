@@ -37,7 +37,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     //Progress Dialog
     ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
-    TextView nombre;
+    TextView nombre, rutas, sitios;
     TextInputEditText fullname, email;
     private DatabaseReference mDatabase;
     String id;
@@ -50,6 +50,9 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        rutas = view.findViewById(R.id.rutas_label_ciclista);
+        sitios = view.findViewById(R.id.sitios_label_ciclista);
 
         nombre = view.findViewById(R.id.pr_name_menu);
         email = view.findViewById(R.id.pr_email_menu);
@@ -106,9 +109,14 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
+                        Long sitiostxt = (Long) (dataSnapshot.child("sitios").getValue());
+                        Long rutasttxt = (Long) (dataSnapshot.child("rutas").getValue());
                         String namedata = dataSnapshot.child("nombres").getValue().toString();
                         String emaildata = dataSnapshot.child("email").getValue().toString();
 
+
+                        rutas.setText(String.valueOf(rutasttxt));
+                        sitios.setText(String.valueOf(sitiostxt));
                         nombre.setText(namedata);
                         fullname.setText(namedata);
                         email.setText(emaildata);

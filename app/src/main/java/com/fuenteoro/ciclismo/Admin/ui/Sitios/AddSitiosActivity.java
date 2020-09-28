@@ -21,11 +21,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fuenteoro.ciclismo.R;
+import com.fuenteoro.ciclismo.Sitios.CalificarSitioActivity;
+import com.fuenteoro.ciclismo.Sitios.RecorridoSitioActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -58,7 +64,8 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
     Bitmap thumb_bitmap = null;
     String aleatorio = "";
     byte[] thumb_byte;
-
+    private FirebaseAuth mAuth;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,7 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
 
         abrirgaleria = findViewById(R.id.btn_imagen_sitio_admin_add);
         actualizar = findViewById(R.id.btn_actualizar_sitio_admin_add);
+        mAuth = FirebaseAuth.getInstance();
 
         abrirgaleria.setOnClickListener(this);
         actualizar.setOnClickListener(this);
@@ -146,6 +154,8 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
             cargando.show();
 
             if (!aleatorio.equals("")) {
+                id = mAuth.getCurrentUser().getUid();
+
                 final StorageReference ref = storageReference.child(aleatorio);
                 UploadTask uploadTask = ref.putBytes(thumb_byte);
                 Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -171,6 +181,25 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
                         mandarnotificacion();
                         Toast.makeText(AddSitiosActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
                         finish();
+                        /*mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    int sitiof = 0;
+                                    Long sitios = (Long) dataSnapshot.child("sitios").getValue();
+                                    sitiof = (int) (sitios + 1);
+
+                                    Map<String, Object> sitiosMap = new HashMap<>();
+                                    sitiosMap.put("sitios", sitiof);
+                                    mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });*/
                     }
                 });
 

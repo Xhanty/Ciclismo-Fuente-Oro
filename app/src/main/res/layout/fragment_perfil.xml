@@ -78,7 +78,7 @@
                         android:src="@drawable/ic_rutas" />
 
                     <TextView
-                        android:id="@+id/rutas_label"
+                        android:id="@+id/rutas_label_ciclista"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -92,7 +92,7 @@
                         android:id="@+id/rutas_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/rutas_label"
+                        android:layout_below="@id/rutas_label_ciclista"
                         android:layout_centerHorizontal="true"
                         android:includeFontPadding="false"
                         android:text="Rutas"
@@ -124,7 +124,7 @@
                         android:src="@drawable/ic_home" />
 
                     <TextView
-                        android:id="@+id/sitios_label"
+                        android:id="@+id/sitios_label_ciclista"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -138,7 +138,7 @@
                         android:id="@+id/sitios_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/sitios_label"
+                        android:layout_below="@id/sitios_label_ciclista"
                         android:layout_centerHorizontal="true"
                         android:includeFontPadding="false"
                         android:text="Sitios"

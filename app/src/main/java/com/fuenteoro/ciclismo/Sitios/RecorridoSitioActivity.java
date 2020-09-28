@@ -1,10 +1,13 @@
 package com.fuenteoro.ciclismo.Sitios;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fuenteoro.ciclismo.MenuActivity;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.RutasUtilidades;
 import com.google.android.gms.maps.CameraUpdate;
@@ -29,10 +34,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class RecorridoSitioActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -56,6 +70,11 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
 
     JsonObjectRequest jsonObjectRequest;
     RequestQueue request;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    String id;
+    int sitiof = 0;
+    Long sitios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +85,8 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
         Nombre = getIntent().getStringExtra("Nombre");
         LatitudD = getIntent().getDoubleExtra("Latitud", 1);
         LongitudD = getIntent().getDoubleExtra("Longitud", 1);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -82,13 +103,89 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
     private void agregarUbicacion(double lat, double lng) {
         LatLng coordenada = new LatLng(lat, lng);
         LatLng destino = new LatLng(LatitudD, LongitudD);
+        float[] disResultado = new float[2];
 
-        if(lat == LatitudD){
-            Intent intent = new Intent(this, CalificarSitioActivity.class);
-            startActivity(intent);
-            finish();
+        Circle circle = mMap.addCircle(new CircleOptions()
+                .center(new LatLng(LatitudD, LongitudD))
+                .radius(5)
+                .strokeColor(Color.RED)
+                .fillColor(Color.BLUE));
+
+        Location.distanceBetween(coordenada.latitude, coordenada.longitude,
+                circle.getCenter().latitude,
+                circle.getCenter().longitude,
+                disResultado);
+
+        if(disResultado[0] < circle.getRadius()){
+            id = mAuth.getCurrentUser().getUid();
             Toast.makeText(this, "Ya llegaste", Toast.LENGTH_SHORT).show();
-        } else {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Alerta");
+            builder.setMessage("¿Deseas calificar este sitio y/o proponer uno nuevo?");
+
+            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                int sitiof = 0;
+                                Long sitios = (Long) dataSnapshot.child("sitios").getValue();
+                                sitiof = (int) (sitios + 1);
+
+                                Map<String, Object> sitiosMap = new HashMap<>();
+                                sitiosMap.put("sitios", sitiof);
+                                mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
+
+                                Intent intent = new Intent(RecorridoSitioActivity.this, CalificarSitioActivity.class);
+                                intent.putExtra("ID", ID);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                sitiof = 0;
+                                sitios = (Long) dataSnapshot.child("sitios").getValue();
+                                sitiof = (int) (sitios + 1);
+
+                                Map<String, Object> sitiosMap = new HashMap<>();
+                                sitiosMap.put("sitios", sitiof);
+                                mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
+                                Toast.makeText(RecorridoSitioActivity.this, "Hasta el próximo recorrido!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            });
+
+            builder.create();
+            builder.show();
+        }
+
+        else {
             CameraUpdate miUbi = CameraUpdateFactory.newLatLngZoom(coordenada, 16);
             if (marcador != null) marcador.remove();
             marcador = mMap.addMarker(new MarkerOptions()
@@ -336,5 +433,30 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
         }
 
         return poly;
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Alerta");
+        builder.setMessage("¿Deseas cerrar el recorrido?");
+
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.create();
+        builder.show();
+        super.onBackPressed();
     }
 }

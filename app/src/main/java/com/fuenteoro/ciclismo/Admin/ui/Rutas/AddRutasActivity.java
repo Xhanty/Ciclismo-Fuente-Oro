@@ -24,8 +24,12 @@ import com.fuenteoro.ciclismo.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,13 +64,15 @@ public class AddRutasActivity extends AppCompatActivity implements View.OnClickL
     Bitmap thumb_bitmap = null;
     String aleatorio = "";
     byte [] thumb_byte;
-
+    private FirebaseAuth mAuth;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rutas);
 
+        mAuth = FirebaseAuth.getInstance();
         imagen = findViewById(R.id.imagen_ruta_admin_add);
         nombre = findViewById(R.id.nombre_ruta_admin_add);
         latitudorigen = findViewById(R.id.latitud_rutaorigen_admin_add);
@@ -98,6 +104,7 @@ public class AddRutasActivity extends AppCompatActivity implements View.OnClickL
             cargando.show();
 
             if(!aleatorio.equals("")){
+                id = mAuth.getCurrentUser().getUid();
                 final StorageReference ref = storageReference.child(aleatorio);
                 UploadTask uploadTask = ref.putBytes(thumb_byte);
                 Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -127,6 +134,25 @@ public class AddRutasActivity extends AppCompatActivity implements View.OnClickL
                         mandarnotificacion();
                         Toast.makeText(AddRutasActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
                         finish();
+                        /*mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    int sitiof = 0;
+                                    Long sitios = (Long) dataSnapshot.child("sitios").getValue();
+                                    sitiof = (int) (sitios + 1);
+
+                                    Map<String, Object> sitiosMap = new HashMap<>();
+                                    sitiosMap.put("sitios", sitiof);
+                                    mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });*/
                     }
                 });
 
