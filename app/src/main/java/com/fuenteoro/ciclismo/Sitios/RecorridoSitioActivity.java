@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fuenteoro.ciclismo.Ciclista.DetalleSitioActivity;
 import com.fuenteoro.ciclismo.MenuActivity;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.RutasUtilidades;
@@ -73,6 +75,8 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     String id;
+    LocationManager locationManager;
+    Location location;
     int sitiof = 0;
     Long sitios;
 
@@ -97,7 +101,14 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         miUbicacion();
+    }
+
+    @Override
+    protected void onStart() {
+        id = mAuth.getCurrentUser().getUid();
+        super.onStart();
     }
 
     private void agregarUbicacion(double lat, double lng) {
@@ -117,40 +128,19 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
                 disResultado);
 
         if(disResultado[0] < circle.getRadius()){
-            id = mAuth.getCurrentUser().getUid();
-            Toast.makeText(this, "Ya llegaste", Toast.LENGTH_SHORT).show();
+            locationManager.removeUpdates(locListener);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(RecorridoSitioActivity.this);
             builder.setTitle("Alerta");
             builder.setMessage("¿Deseas calificar este sitio y/o proponer uno nuevo?");
 
             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                int sitiof = 0;
-                                Long sitios = (Long) dataSnapshot.child("sitios").getValue();
-                                sitiof = (int) (sitios + 1);
-
-                                Map<String, Object> sitiosMap = new HashMap<>();
-                                sitiosMap.put("sitios", sitiof);
-                                mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
-
-                                Intent intent = new Intent(RecorridoSitioActivity.this, CalificarSitioActivity.class);
-                                intent.putExtra("ID", ID);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    Intent intent = new Intent(RecorridoSitioActivity.this, CalificarSitioActivity.class);
+                    intent.putExtra("ID", ID);
+                    startActivity(intent);
+                    finish();
                 }
             });
 
@@ -168,7 +158,6 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
                                 Map<String, Object> sitiosMap = new HashMap<>();
                                 sitiosMap.put("sitios", sitiof);
                                 mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
-                                Toast.makeText(RecorridoSitioActivity.this, "Hasta el próximo recorrido!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
@@ -185,7 +174,7 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
             builder.show();
         }
 
-        else {
+        else if (disResultado[0] > circle.getRadius()) {
             CameraUpdate miUbi = CameraUpdateFactory.newLatLngZoom(coordenada, 16);
             if (marcador != null) marcador.remove();
             marcador = mMap.addMarker(new MarkerOptions()
@@ -213,6 +202,7 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
         }
     }
 
+
     LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -237,11 +227,12 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
 
     private void miUbicacion() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         actualizarUbicacion(location);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000,0, locListener);
     }

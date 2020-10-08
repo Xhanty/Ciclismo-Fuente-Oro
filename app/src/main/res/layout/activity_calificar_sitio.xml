@@ -36,11 +36,13 @@
                     android:layout_height="wrap_content"
                     app:errorEnabled="true">
 
-                    <Spinner
+                    <RatingBar
                         android:id="@+id/califica_sitio_ciclis_coment"
+                        style="@style/RatingBar.Yellow"
+                        android:layout_gravity="center"
                         android:layout_marginRight="35dp"
                         android:layout_marginLeft="35dp"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="66dp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
