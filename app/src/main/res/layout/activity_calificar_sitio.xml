@@ -95,19 +95,6 @@
                     android:textAllCaps="false"
                     android:textSize="20dp"/>
 
-                <Button
-                    android:id="@+id/btn_sitio_ciclis_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginRight="35dp"
-                    android:background="@drawable/btnlogin"
-                    android:text="Proponer sitio nuevo"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAllCaps="false"
-                    android:textSize="20dp"/>
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

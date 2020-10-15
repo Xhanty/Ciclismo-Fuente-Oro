@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Sitios.ActivityNewSitio">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/baloo"
+            android:textColor="#000"
+            android:textSize="25dp"
+            android:layout_marginTop="10dp"
+            android:text="Formulario"/>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/txt_new_sitio_ciclis_img"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:background="#fff"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Nombre del sitio"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_new_sitio_ciclis_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLength="20"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Latitud"
+            app:counterEnabled="true"
+            app:counterMaxLength="30">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_new_sitio_ciclis_latitud"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="30"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Longitud"
+            app:counterEnabled="true"
+            app:counterMaxLength="30">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_new_sitio_ciclis_longitud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="30"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción"
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_new_sitio_ciclis_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="30"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnimg_new_sitio_ciclis"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:background="@android:color/transparent"
+            android:text="Seleccionar imagen"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAllCaps="false"
+            android:textSize="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnimg_new_sitio_ciclis_cancel"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/btnlogin"
+                android:text="Cancelar"
+                android:textColor="#7C7575"
+                android:textAllCaps="false"
+                android:textSize="15dp"/>
+
+            <Button
+                android:id="@+id/btnimg_new_sitio_ciclis_save"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btnlogin"
+                android:layout_marginLeft="20dp"
+                android:text="Guardar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

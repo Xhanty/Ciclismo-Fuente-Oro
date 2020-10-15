@@ -79,6 +79,7 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
     Location location;
     int sitiof = 0;
     Long sitios;
+    String nombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +138,23 @@ public class RecorridoSitioActivity extends FragmentActivity implements OnMapRea
             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(RecorridoSitioActivity.this, CalificarSitioActivity.class);
-                    intent.putExtra("ID", ID);
-                    startActivity(intent);
-                    finish();
+                    mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                nombre = dataSnapshot.child("nombres").getValue().toString();
+
+                                Intent intent = new Intent(RecorridoSitioActivity.this, CalificarSitioActivity.class);
+                                intent.putExtra("ID", ID);
+                                intent.putExtra("Nombre", nombre);
+                                startActivity(intent);
+                                finish();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             });
 

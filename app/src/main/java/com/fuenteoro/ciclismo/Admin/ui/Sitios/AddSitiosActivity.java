@@ -203,7 +203,9 @@ public class AddSitiosActivity extends AppCompatActivity implements View.OnClick
                     }
                 });
 
-            } else {
+            }
+
+            else {
                 Toast.makeText(AddSitiosActivity.this, "Selecciona una imagen!", Toast.LENGTH_SHORT).show();
             }
         }

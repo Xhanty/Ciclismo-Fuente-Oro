@@ -6,13 +6,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -59,7 +63,7 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
     ImageView imagen;
     TextInputEditText comentario;
     RatingBar calificacion;
-    Button abrirgaleria, guardar, addsitio;
+    Button abrirgaleria, guardar;
 
     int sitiof = 0;
     Long sitios;
@@ -82,9 +86,9 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
 
         abrirgaleria = findViewById(R.id.btn_imagen_sitio_ciclista_add);
         guardar = findViewById(R.id.btn_sitio_ciclis_coment);
-        addsitio = findViewById(R.id.btn_sitio_ciclis_add);
 
         ID = getIntent().getStringExtra("ID");
+        nombre = getIntent().getStringExtra("Nombre");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference().child("Sitios").child("imagenes");
@@ -92,7 +96,6 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
 
         abrirgaleria.setOnClickListener(this);
         guardar.setOnClickListener(this);
-        addsitio.setOnClickListener(this);
     }
 
     @Override
@@ -123,7 +126,6 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
     @Override
     protected void onStart() {
         id = mAuth.getCurrentUser().getUid();
-        nombre = mAuth.getCurrentUser().getDisplayName();
         super.onStart();
     }
 
@@ -132,73 +134,78 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v == abrirgaleria){
             CropImage.startPickImageActivity(CalificarSitioActivity.this);
-
         }
 
         else if (v == guardar){
-            cargando.setTitle("Guardando datos");
-            cargando.setMessage("Espera por favor...");
-            cargando.show();
-            if (!aleatorio.equals("")) {
-                mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            sitiof = 0;
-                            sitios = (Long) dataSnapshot.child("sitios").getValue();
-                            sitiof = (int) (sitios + 1);
+            String validarcc = comentario.getText().toString().trim();
+            if(validarcc.isEmpty()){
+                Toast.makeText(CalificarSitioActivity.this, "Ingresa un comentario!", Toast.LENGTH_SHORT).show();
 
-                            Map<String, Object> sitiosMap = new HashMap<>();
-                            sitiosMap.put("sitios", sitiof);
-                            mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                final StorageReference ref = storageReference.child(aleatorio);
-                UploadTask uploadTask = ref.putBytes(thumb_byte);
-                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw Objects.requireNonNull(task.getException());
-                        }
-                        return ref.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        Uri downloaduri = task.getResult();
-                        Map<String, Object> calificaMap = new HashMap<>();
-                        calificaMap.put("calificacion", calificacion.getRating());
-                        calificaMap.put("ciclista", nombre);
-                        calificaMap.put("comentario", comentario.getText().toString().trim());
-                        calificaMap.put("fecha", formatFecha.format(fecha));
-                        calificaMap.put("imagen", downloaduri.toString().trim());
-                        calificaMap.put("sitio", ID);
-                        mDatabase.child("Sitios").child("comentarios").push().setValue(calificaMap);
-                        cargando.dismiss();
-                        Toast.makeText(CalificarSitioActivity.this, "Guardado correctamente!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
             } else {
-                cargando.dismiss();
-                Toast.makeText(CalificarSitioActivity.this, "Selecciona una imagen!", Toast.LENGTH_SHORT).show();
+                if (!aleatorio.equals("")) {
+                    cargando.setTitle("Guardando datos");
+                    cargando.setMessage("Espera por favor...");
+                    cargando.show();
+
+                    mDatabase.child("Usuarios").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                sitiof = 0;
+                                sitios = (Long) dataSnapshot.child("sitios").getValue();
+                                sitiof = (int) (sitios + 1);
+
+                                Map<String, Object> sitiosMap = new HashMap<>();
+                                sitiosMap.put("sitios", sitiof);
+                                mDatabase.child("Usuarios").child(id).updateChildren(sitiosMap);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    final StorageReference ref = storageReference.child(aleatorio);
+                    UploadTask uploadTask = ref.putBytes(thumb_byte);
+                    Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw Objects.requireNonNull(task.getException());
+                            }
+                            return ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            Uri downloaduri = task.getResult();
+                            Map<String, Object> calificaMap = new HashMap<>();
+                            calificaMap.put("calificacion", calificacion.getRating());
+                            calificaMap.put("ciclista", nombre);
+                            calificaMap.put("comentario", comentario.getText().toString().trim());
+                            calificaMap.put("fecha", formatFecha.format(fecha));
+                            calificaMap.put("imagen", downloaduri.toString().trim());
+                            calificaMap.put("sitio", ID);
+                            mDatabase.child("Sitios").child("comentarios").push().setValue(calificaMap);
+                            cargando.dismiss();
+                            Toast.makeText(CalificarSitioActivity.this, "Calificación guardada correctamente!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CalificarSitioActivity.this, ActivityNewSitio.class);
+                            intent.putExtra("Nombre", nombre);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }
+
+                else {
+                    cargando.dismiss();
+                    Toast.makeText(CalificarSitioActivity.this, "Selecciona una imagen!", Toast.LENGTH_SHORT).show();
+                }
             }
-
-        }
-
-        else if (v == addsitio){
-            //TRABAJAR ESTA OPCIÓN
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -221,6 +228,7 @@ public class CalificarSitioActivity extends AppCompatActivity implements View.On
                 Uri resulturi = result.getUri();
                 File url = new File(resulturi.getPath());
                 Picasso.with(this).load(url).into(imagen);
+                //Picasso.with(this).load(url).into(aimg);
                 //COMPRIMIENDO IMAGEN
                 try {
                     thumb_bitmap = new Compressor(this)
