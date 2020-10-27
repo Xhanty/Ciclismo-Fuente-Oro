@@ -175,6 +175,7 @@ public class EditarRutasActivity extends AppCompatActivity implements View.OnCli
                         imgeditar.setImageResource(0);
                         cargando.dismiss();
                         Toast.makeText(EditarRutasActivity.this, "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
@@ -191,6 +192,7 @@ public class EditarRutasActivity extends AppCompatActivity implements View.OnCli
                 mDatabase.child(ID).updateChildren(rutaMap);
                 cargando.dismiss();
                 Toast.makeText(this, "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
         } else if (v == comentarios){

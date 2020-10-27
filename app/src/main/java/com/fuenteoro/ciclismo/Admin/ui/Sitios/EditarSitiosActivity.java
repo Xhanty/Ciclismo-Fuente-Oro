@@ -157,6 +157,7 @@ public class EditarSitiosActivity extends AppCompatActivity implements View.OnCl
                         imgeditar.setImageResource(0);
                         cargando.dismiss();
                         Toast.makeText(EditarSitiosActivity.this, "Actualizado correctamente!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 

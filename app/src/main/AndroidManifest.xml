@@ -61,10 +61,17 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Sitios.ActivityNewSitio"
+            android:name=".Admin.ui.Home.ViewRutasActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".Admin.ui.Home.ViewSitiosActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Sitios.ActivityNewSitio"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Admin.ui.Rutas.AddRutasActivity"
             android:screenOrientation="portrait"
