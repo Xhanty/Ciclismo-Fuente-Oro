@@ -138,7 +138,7 @@ public class ViewSitiosActivity extends AppCompatActivity implements View.OnClic
             } catch (Exception e) {
                 Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
                 startActivity( new Intent(Intent.ACTION_VIEW, uri));
-                finish();
+                //finish();
             }
         }
     }
