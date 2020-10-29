@@ -13,15 +13,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!--
+
         <fragment
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:id="@+id/map_detalle_sitio"
+            android:id="@+id/map_detalle_ruta"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             tools:context=".Ciclista.DetalleSitioActivity" />
 
         <Button
+            android:id="@+id/btn_ir_ruta"
             android:layout_width="match_parent"
             android:background="@drawable/btnlogin"
             android:layout_marginTop="20dp"
@@ -34,64 +34,35 @@
             android:textColor="@color/colorAccent"
             android:textSize="25dp"/>
 
-        <fragment
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="150dp" />
-         -->
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Distacia"
+                    android:text="Nombre"
                     android:textSize="19dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#6C6666"/>
 
                 <TextView
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/nombre_ruta_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4,94 km"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/baloo"
-                    android:textColor="#000"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dificultad técnica"
-                    android:textSize="19dp"
-                    android:fontFamily="@font/baloo"
-                    android:textColor="#6C6666"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Moderado"
+                    android:text="...."
                     android:textSize="20dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#000"/>
@@ -104,28 +75,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginRight="26dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="-10dp"
                 android:layout_marginTop="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Desnivel\nsubiendo"
+                    android:text="Distancia"
                     android:textSize="19dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#6C6666"/>
 
                 <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/distancia_ruta_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="814 m"
+                    android:text="..."
                     android:textSize="20dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#000"/>
@@ -142,15 +116,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tiempo total"
+                    android:text="Dificultad"
                     android:textSize="19dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#6C6666"/>
 
                 <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/dificultad_ruta_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 h 15 min"
+                    android:text="..."
                     android:textSize="20dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#000"/>
@@ -163,56 +139,84 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="50dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="5dp">
 
                 <TextView
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Altitud\nmáxima"
+                    android:text="Calificación"
                     android:textSize="19dp"
                     android:fontFamily="@font/baloo"
                     android:textColor="#6C6666"/>
 
-                <TextView
+                <RatingBar
+                    android:layout_gravity="center"
+                    android:isIndicator="true"
+                    android:progressBackgroundTint="#ccc"
+                    android:id="@+id/calificacion_ruta_detalle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2.276 m"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/baloo"
-                    android:textColor="#000"/>
+                    android:theme="@style/RatingBar.Yellow"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="52dp"
                 android:layout_marginTop="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Altitud mínima"
-                    android:textSize="19dp"
-                    android:fontFamily="@font/baloo"
-                    android:textColor="#6C6666"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:weightSum="10"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_height="180dp"
+                    android:layout_width="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1.437 m"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/baloo"
-                    android:textColor="#000"/>
+                    <TextView
+                        android:id="@+id/autor_galeria_ruta_detalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000"
+                        android:textColor="#fff"
+                        android:textAlignment="textEnd"
+                        android:text="Autor"
+                        android:fontFamily="@font/baloo"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/galeria_ruta_detalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal">
+
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
 
             </LinearLayout>
 

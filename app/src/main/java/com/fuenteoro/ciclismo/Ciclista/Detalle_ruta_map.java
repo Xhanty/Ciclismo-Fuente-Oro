@@ -2,18 +2,14 @@ package com.fuenteoro.ciclismo.Ciclista;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fuenteoro.ciclismo.Models.Rutas;
 import com.fuenteoro.ciclismo.R;
 import com.fuenteoro.ciclismo.Utils.UtilsNetwork;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,7 +18,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,14 +25,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Detalle_sitio_map extends Fragment {
+public class Detalle_ruta_map extends Fragment {
+
 
     GoogleMap mMap;
     String ID = "1";
     DatabaseReference mDatabase;
-    Double latitud_sitio;
-    Double longitud_sitio;
+    Double latitud_origen, latitud_destino;
+    Double longitud_origen, longitud_destino;
     String nombre;
+
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
@@ -48,12 +45,14 @@ public class Detalle_sitio_map extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
                             nombre = dataSnapshot.child("nombre").getValue().toString();
-                            latitud_sitio = (Double) dataSnapshot.child("latitud_sitio").getValue();
-                            longitud_sitio = (Double) dataSnapshot.child("longitud_sitio").getValue();
+                            latitud_origen = (Double) dataSnapshot.child("latitud_origen").getValue();
+                            latitud_destino = (Double) dataSnapshot.child("latitud_destino").getValue();
+                            longitud_origen = (Double) dataSnapshot.child("longitud_origen").getValue();
+                            longitud_destino = (Double) dataSnapshot.child("longitud_destino").getValue();
 
                             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-                            LatLng origen = new LatLng(latitud_sitio, longitud_sitio);
+                            LatLng origen = new LatLng(latitud_origen, longitud_origen);
                             mMap.addMarker(new MarkerOptions().position(origen)
                                     .title(nombre)
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.sitio)));
@@ -69,11 +68,11 @@ public class Detalle_sitio_map extends Fragment {
                         Toast.makeText(getContext(), "A ocurrido en error, intentalo más tarde", Toast.LENGTH_LONG).show();
                     }
                 });
+
         }
     };
 
-    public Detalle_sitio_map() {
-        // Required empty public constructor
+    public Detalle_ruta_map() {
     }
 
     @Override
@@ -90,9 +89,10 @@ public class Detalle_sitio_map extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_detalle_sitio_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_detalle_ruta_map, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Sitios");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Rutas");
+
         return view;
     }
 
@@ -100,7 +100,7 @@ public class Detalle_sitio_map extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_detalle_sitio);
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }

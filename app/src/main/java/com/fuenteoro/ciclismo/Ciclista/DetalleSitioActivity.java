@@ -46,7 +46,6 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
     String nombre, detalle;
     Double latitud_sitio;
     Double longitud_sitio;
-    Double LatitudL, LongitudL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +98,12 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
                     detalle = dataSnapshot.child("detalle").getValue().toString();
                     latitud_sitio = (Double) dataSnapshot.child("latitud_sitio").getValue();
                     longitud_sitio = (Double) dataSnapshot.child("longitud_sitio").getValue();
-                    String imagen = dataSnapshot.child("imagen").getValue().toString();
                     int calificacion = Integer.parseInt(dataSnapshot.child("calificacion").getValue().toString());
 
                     nombresitio.setText(nombre);
                     latitud.setText(String.valueOf(latitud_sitio));
                     longitud.setText(String.valueOf(longitud_sitio));
                     detallesitio.setText(detalle);
-                    //Picasso.with(getApplicationContext()).load(imagen).into(img_sitio);
                     calificacion_detalle_sitio.setProgress(Integer.valueOf(calificacion));
 
                 } else {
@@ -159,7 +156,7 @@ public class DetalleSitioActivity extends AppCompatActivity implements View.OnCl
                         } catch (Exception e) {
                             Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
                             startActivity( new Intent(Intent.ACTION_VIEW, uri));
-                            finish();
+                            //finish();
                         }
                     }
                 }
